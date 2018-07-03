@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nassaty.hireme.activities.AddNewJob">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/jobTitle"
+        android:hint="Job Title"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/jobDescription"
+        android:layout_below="@id/jobTitle"
+        android:hint="Job Description"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/jobSalary"
+        android:layout_below="@id/jobDescription"
+        android:hint="Job Salary"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/jobSalary"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="6dp"
+        android:text="Add"
+        android:onClick="addJob"/>
+
+</RelativeLayout>

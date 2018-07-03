@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:easytabs="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@color/lighter_grey"
+    tools:context=".activities.Profile">
+
+    <RelativeLayout
+        android:id="@+id/profile_space"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/color_white">
+
+        <FrameLayout
+            android:id="@+id/profile_pic_layout"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_margin="6dp">
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/profile_pic_layout"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="Profile Name"
+                android:textColor="@color/color_lighter_dark"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="sans-serif"
+                android:text="View Profile"
+                android:textColor="@color/color_lighter_green"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/profile_space"
+        android:layout_marginTop="4dp"
+        android:orientation="vertical"
+        android:background="@color/color_white">
+
+        <com.loicteillard.easytabs.EasyTabs
+            android:id="@+id/easytabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            easytabs:etab_selected_color="@color/colorTextIcons"
+            easytabs:etab_unselected_color="@color/colorAccent"
+            easytabs:etab_bold_for_selected="true"
+            easytabs:etab_separators="false">
+
+            <com.loicteillard.easytabs.EasyTabTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/my_jobs"
+                android:textAllCaps="true"
+                easytabs:etab_selected_color="@color/colorAccent" />
+            <com.loicteillard.easytabs.EasyTabTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/my_applications"
+                android:textAllCaps="true"
+                easytabs:etab_selected_color="@color/colorAccent" />
+        </com.loicteillard.easytabs.EasyTabs>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

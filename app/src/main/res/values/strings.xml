@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">HireMe</string>
+    <string name="action_favorites">Favorites</string>
+    <string name="action_view_applications">Applications</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_sent">Sent</string>
+    <string name="app_accepted">Accepted</string>
+    <string name="app_rejected">Rejected</string>
+    <string name="my_jobs">My Jobs</string>
+    <string name="my_applications">My Applications</string>
+    <string name="action_profile">Profile</string>
+</resources>

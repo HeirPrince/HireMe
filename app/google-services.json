@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "497212096426",
+    "firebase_url": "https://hireme-4b36b.firebaseio.com",
+    "project_id": "hireme-4b36b",
+    "storage_bucket": "hireme-4b36b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:497212096426:android:046dd12e4455419f",
+        "android_client_info": {
+          "package_name": "com.nassaty.hireme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "497212096426-kj0vvlc8prvbbjd8ugn3732n4dbq19vn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nassaty.hireme",
+            "certificate_hash": "5450795895a830683dac8006236a6b7482b72fe6"
+          }
+        },
+        {
+          "client_id": "497212096426-6vb10p501247s8b4ruhqn9g0otc2k8le.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "497212096426-6vb10p501247s8b4ruhqn9g0otc2k8le.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhjGNCBJEzvSCelp0h_bPNoQSjEDr8JIY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "497212096426-6vb10p501247s8b4ruhqn9g0otc2k8le.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
