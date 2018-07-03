@@ -12,7 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.nassaty.hireme.R;
-import com.nassaty.hireme.adapters.JobAdapter;
+import com.nassaty.hireme.adapters.my_jobs_adapter;
 import com.nassaty.hireme.listeners.jobListListener;
 import com.nassaty.hireme.model.Job;
 import com.nassaty.hireme.utils.AuthUtils;
@@ -25,7 +25,7 @@ import java.util.Objects;
 public class myJobs extends Fragment {
 
     private RecyclerView job_list;
-    private JobAdapter adapter;
+    private my_jobs_adapter adapter;
     jobListViewModel jobListViewModel;
     private AuthUtils authUtils;
     private List<String> jobRefs;
@@ -78,7 +78,7 @@ public class myJobs extends Fragment {
             }
         });
 
-        adapter = new JobAdapter(getContext(), getJobList(), getJobRefs());
+        adapter = new my_jobs_adapter(getContext(), getJobList(), getJobRefs());
         job_list.setAdapter(adapter);
     }
 

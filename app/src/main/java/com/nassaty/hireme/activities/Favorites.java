@@ -9,9 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.nassaty.hireme.R;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.nassaty.hireme.FavoritesAdapter;
+import com.nassaty.hireme.R;
+import com.nassaty.hireme.adapters.FavoritesAdapter;
 import com.nassaty.hireme.model.Job;
 import com.nassaty.hireme.room.FavListViewModel;
 
