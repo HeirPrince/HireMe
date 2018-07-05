@@ -38,7 +38,7 @@ public class AddNewJob extends AppCompatActivity {
             Toast.makeText(this, "empty fields", Toast.LENGTH_SHORT).show();
         }else {
 //            newJobViewModel.addJob(new Job(jobTitle.getText().toString(), jobDesc.getText().toString(), Integer.valueOf(jobSalary.getText().toString())));
-            newJobModel.insertJob(new Job(jobTitle.getText().toString(), jobDesc.getText().toString(), Integer.valueOf(jobSalary.getText().toString()), authUtils.getCurrentUser().getPhoneNumber()));
+            newJobModel.insertJob(new Job(jobTitle.getText().toString(), jobDesc.getText().toString(), Integer.valueOf(jobSalary.getText().toString()), authUtils.getCurrentUser().getUid()));
             finish();
             startActivity(new Intent(AddNewJob.this, MainActivity.class));
         }

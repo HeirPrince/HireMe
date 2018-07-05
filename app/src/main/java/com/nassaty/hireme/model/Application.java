@@ -1,15 +1,10 @@
 package com.nassaty.hireme.model;
 
-import android.arch.persistence.room.Entity;
-
-@Entity
 public class Application {
     private String job_id;
     private String id;
+    private String sender;
     private boolean isSent, isAccepted, isRejected;
-
-    public Application() {
-    }
 
     public String getJob_id() {
         return job_id;
@@ -25,6 +20,14 @@ public class Application {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
     public boolean isSent() {

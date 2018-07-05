@@ -23,13 +23,13 @@ public class my_jobs_adapter extends RecyclerView.Adapter<my_jobs_adapter.JobVie
     private Context context;
     private List<Job> jobs;
     private List<String> ids;
-    private jobListViewModel jobListViewmodel;
+    private jobListViewModel jListVModel;
 
     public my_jobs_adapter(Context ctx, List<Job> jobs, List<String> ids) {
         this.context = ctx;
         this.jobs = jobs;
         this.ids = ids;
-        this.jobListViewmodel = ViewModelProviders.of((FragmentActivity) context).get(jobListViewModel.class);
+        this.jListVModel = ViewModelProviders.of((FragmentActivity) context).get(jobListViewModel.class);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class my_jobs_adapter extends RecyclerView.Adapter<my_jobs_adapter.JobVie
     }
 
     @Override
-    public void onBindViewHolder(final my_jobs_adapter.JobViewHolder holder, int position) {
+    public void onBindViewHolder(final my_jobs_adapter.JobViewHolder holder, final int position) {
         final Job job = jobs.get(position);
         final String ref = ids.get(position);
 
@@ -54,7 +54,8 @@ public class my_jobs_adapter extends RecyclerView.Adapter<my_jobs_adapter.JobVie
         holder.delete_application.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                holder.deleteJob();
+                removeJob(position);
             }
         });
 
@@ -68,6 +69,12 @@ public class my_jobs_adapter extends RecyclerView.Adapter<my_jobs_adapter.JobVie
     public void addJobs(List<Job> jobList){
         this.jobs = jobList;
         notifyDataSetChanged();
+    }
+
+    public void removeJob(int pos){
+        jobs.remove(pos);
+        notifyItemRemoved(pos);
+        notifyItemRangeChanged(pos, jobs.size());
     }
 
     public class JobViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -110,9 +117,8 @@ public class my_jobs_adapter extends RecyclerView.Adapter<my_jobs_adapter.JobVie
             }
         }
 
-        private void deleteJob(String ref_id) {
-
+        private void deleteJob() {
+            jListVModel.deleteJob(getRef());
         }
-
     }
 }

@@ -35,6 +35,7 @@ public class NewApplicationVModel extends AndroidViewModel {
         application.setAccepted(false);
         application.setRejected(false);
         application.setSent(true);
+        application.setSender(authUtils.getCurrentUser().getUid());
 
         FirebaseFirestore.getInstance()
                 .collection(Constants.applicationRef)

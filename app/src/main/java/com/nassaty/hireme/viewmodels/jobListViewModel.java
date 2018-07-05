@@ -2,6 +2,7 @@ package com.nassaty.hireme.viewmodels;
 
 import android.arch.lifecycle.AndroidViewModel;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -16,6 +17,7 @@ import com.nassaty.hireme.listeners.applicationRejectedListener;
 import com.nassaty.hireme.listeners.jobListListener;
 import com.nassaty.hireme.model.Application;
 import com.nassaty.hireme.model.Job;
+import com.nassaty.hireme.utils.AuthUtils;
 import com.nassaty.hireme.utils.Constants;
 
 import java.util.ArrayList;
@@ -24,10 +26,12 @@ import java.util.List;
 public class jobListViewModel extends AndroidViewModel {
 
     private String ref;
+    private AuthUtils authUtils;
     applicationAddedListener listener;
 
     public jobListViewModel(@NonNull android.app.Application application) {
         super(application);
+        authUtils = new AuthUtils(getApplication());
     }
 
     public interface fetchListener {
@@ -58,7 +62,7 @@ public class jobListViewModel extends AndroidViewModel {
                 });
     }
 
-    public void getJObsByUID(final String phone, final jobListListener listener){
+    public void getJObsByUID(final String phone, final jobListListener listener) {
         final List<Job> jobs = new ArrayList<>();
         final List<String> refs = new ArrayList<>();
 
@@ -71,7 +75,7 @@ public class jobListViewModel extends AndroidViewModel {
                         for (QueryDocumentSnapshot doc : task.getResult()) {
                             if (doc != null) {
                                 Job job = doc.toObject(Job.class);
-                                if (job.getUser_phone().equals(phone)){
+                                if (job.getUser_phone().equals(phone)) {
                                     jobs.add(job);
                                     refs.add(doc.getId());
                                     listener.jobList(jobs);
@@ -107,9 +111,9 @@ public class jobListViewModel extends AndroidViewModel {
                         shiftToAccepted(application, new applicationAddedListener() {
                             @Override
                             public void applicationAdded(Boolean state) {
-                                if (state){
+                                if (state) {
                                     addedListener.applicationAdded(true);
-                                }else {
+                                } else {
                                     addedListener.applicationAdded(false);
                                 }
                             }
@@ -147,7 +151,7 @@ public class jobListViewModel extends AndroidViewModel {
                 });
     }
 
-    public void rejectApplication(final Application application, final applicationRejectedListener listener){
+    public void rejectApplication(final Application application, final applicationRejectedListener listener) {
         changeAppState(application, false, false, true);
         FirebaseFirestore.getInstance()
                 .collection(Constants.applicationRef)
@@ -161,9 +165,9 @@ public class jobListViewModel extends AndroidViewModel {
                         shiftToAccepted(application, new applicationAddedListener() {
                             @Override
                             public void applicationAdded(Boolean state) {
-                                if (state){
+                                if (state) {
                                     listener.isRejected(true);
-                                }else {
+                                } else {
                                     listener.isRejected(false);
                                 }
                             }
@@ -178,10 +182,30 @@ public class jobListViewModel extends AndroidViewModel {
                 });
     }
 
-    public void changeAppState(Application application, boolean sent, boolean accepted, boolean rejected){
+    public void changeAppState(Application application, boolean sent, boolean accepted, boolean rejected) {
         application.setSent(sent);
         application.setAccepted(accepted);
         application.setRejected(rejected);
     }
+
+    public void deleteJob(String ref) {
+        FirebaseFirestore.getInstance()
+                .collection(Constants.jobRef)
+                .document(ref)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplication(), "job deleted", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplication(), "application not deleted", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
 
 }
