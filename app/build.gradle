@@ -10,6 +10,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resConfigs "en"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -50,6 +51,8 @@ dependencies {
 
     //Tabs
     implementation 'com.github.loicteillard:EasyTabs:0.3'
+    //Pop menu - Droppy
+    implementation 'com.shehabic.droppy:Droppy:0.6.0@aar'
 
 }
 apply plugin: 'com.google.gms.google-services'

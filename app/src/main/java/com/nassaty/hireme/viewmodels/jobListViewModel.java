@@ -34,6 +34,32 @@ public class jobListViewModel extends AndroidViewModel {
         authUtils = new AuthUtils(getApplication());
     }
 
+    public void getJobList(final jobListListener listener){
+        final List<Job> jobs = new ArrayList<>();
+
+        FirebaseFirestore.getInstance()
+                .collection(Constants.jobRef)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
+                            if (doc != null) {
+                                Job job = doc.toObject(Job.class);
+                                jobs.add(job);
+                                listener.jobList(jobs);
+                            }
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+    }
+
     public interface fetchListener {
         void gottenList(List<Application> applications);
     }
@@ -64,7 +90,6 @@ public class jobListViewModel extends AndroidViewModel {
 
     public void getJObsByUID(final String phone, final jobListListener listener) {
         final List<Job> jobs = new ArrayList<>();
-        final List<String> refs = new ArrayList<>();
 
         FirebaseFirestore.getInstance()
                 .collection(Constants.jobRef)
@@ -75,11 +100,9 @@ public class jobListViewModel extends AndroidViewModel {
                         for (QueryDocumentSnapshot doc : task.getResult()) {
                             if (doc != null) {
                                 Job job = doc.toObject(Job.class);
-                                if (job.getUser_phone().equals(phone)) {
+                                if (job.getOwner().equals(phone)) {
                                     jobs.add(job);
-                                    refs.add(doc.getId());
                                     listener.jobList(jobs);
-                                    listener.refList(refs);
                                 }
                             }
                         }

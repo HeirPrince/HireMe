@@ -28,7 +28,6 @@ public class myJobs extends Fragment {
     private my_jobs_adapter adapter;
     jobListViewModel jobListViewModel;
     private AuthUtils authUtils;
-    private List<String> jobRefs;
     private List<Job> jobList;
     private ProgressBar progress;
 
@@ -42,7 +41,6 @@ public class myJobs extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_jobs, container, false);
         authUtils = new AuthUtils(getContext());
-        jobRefs = new ArrayList<>();
         jobList = new ArrayList<>();
 
         jobListViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(com.nassaty.hireme.viewmodels.jobListViewModel.class);
@@ -54,39 +52,31 @@ public class myJobs extends Fragment {
         job_list.setLayoutManager(new LinearLayoutManager(getContext()));
         job_list.setHasFixedSize(true);
 
-        getData(getJobList(), getJobRefs());
+        getData(getJobList());
 
         return v;
     }
 
-    public void getData(final List<Job> jobList, final List<String> jobRefs) {
+    public void getData(final List<Job> jobList) {
 
-        jobListViewModel.getJObsByUID(authUtils.getCurrentUser().getPhoneNumber(), new jobListListener() {
+        jobListViewModel.getJObsByUID(authUtils.getCurrentUser().getUid(), new jobListListener() {
             @Override
             public void jobList(List<Job> jobs) {
-                if (jobs != null){
+                if (jobs != null) {
+                    jobList.clear();
                     jobList.addAll(jobs);
                     progress.setVisibility(View.GONE);
-                }else {
+                } else {
                     Toast.makeText(getContext(), "you have no jobs yet", Toast.LENGTH_SHORT).show();
                 }
             }
-
-            @Override
-            public void refList(List<String> refs) {
-                jobRefs.addAll(refs);
-            }
         });
 
-        adapter = new my_jobs_adapter(getContext(), getJobList(), getJobRefs());
+        adapter = new my_jobs_adapter(getContext(), getJobList());
         job_list.setAdapter(adapter);
     }
 
     public List<Job> getJobList() {
         return jobList;
-    }
-
-    public List<String> getJobRefs() {
-        return jobRefs;
     }
 }

@@ -5,27 +5,60 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.nassaty.hireme.R;
 import com.nassaty.hireme.fragments.JobsList;
 import com.nassaty.hireme.listeners.ProfileListener;
 import com.nassaty.hireme.utils.AuthUtils;
 
-public class MainActivity extends AppCompatActivity implements View.OnLongClickListener, View.OnClickListener {
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+public class MainActivity extends AppCompatActivity implements View.OnLongClickListener, View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 
     private AuthUtils authUtils;
+    private View filter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         authUtils = new AuthUtils(this);
+
+        filter = findViewById(R.id.filter);
+
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
+                MenuInflater inflater = popupMenu.getMenuInflater();
+                inflater.inflate(R.menu.filter_popup_menu, popupMenu.getMenu());
+
+                try {
+                    Field[] fields = popupMenu.getClass().getDeclaredFields();
+                    for (Field field : fields) {
+                        if ("mPopup".equals(field.getName())) {
+                            field.setAccessible(true);
+                            Object menuPopupHelper = field.get(popupMenu);
+                            Class<?> classPopupHelper = Class.forName(menuPopupHelper.getClass().getName());
+                            Method setForceIcons = classPopupHelper.getMethod("setForceShowIcon", boolean.class);
+                            setForceIcons.invoke(menuPopupHelper, true);
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                popupMenu.setOnMenuItemClickListener(MainActivity.this);
+                popupMenu.show();
+            }
+        });
 
         if (authUtils.checkAuth()){
             //Adding fragment
@@ -56,44 +89,25 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_add_favorites) {
-            startActivity(new Intent(MainActivity.this, Favorites.class));
-        }else if (id == R.id.action_profile){
-            startActivity(new Intent(MainActivity.this, Profile.class));
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public boolean onLongClick(View view) {
-//        Job job = (Job)view.getTag();
-//        jobListViewModel.deleteJob(job);
         return true;
     }
 
     @Override
     public void onClick(View view) {
-//        int id = view.getId();
-//
-//        switch (id){
-//            case R.id.fab:
-//                startActivity(new Intent(MainActivity.this, AddNewJob.class));
-//                break;
-//        }
+        //on click
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        switch (menuItem.getItemId()){
+            case R.id.action_profile:
+                Toast.makeText(this, "clicked me", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                return false;
+        }
+
+        return false;
     }
 }

@@ -12,7 +12,7 @@
         <activity
             android:name="com.nassaty.hireme.activities.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.Material" />
         <activity android:name="com.nassaty.hireme.activities.AddNewJob" />
         <activity android:name="com.nassaty.hireme.activities.Favorites" />
         <activity android:name="com.nassaty.hireme.activities.AuthActivity">

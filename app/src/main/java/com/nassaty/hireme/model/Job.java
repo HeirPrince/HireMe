@@ -1,36 +1,27 @@
 package com.nassaty.hireme.model;
 
-
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity
 public class Job {
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+    private String id;
     private String title;
     private String description;
+    @PrimaryKey
     private int salary;
-    private String user_phone;
+    private String owner;
+
 
     public Job() {
     }
 
-    @Ignore
-    public Job(String title, String description, int salary, String user_phone) {
-        this.title = title;
-        this.description = description;
-        this.salary = salary;
-        this.user_phone = user_phone;
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -58,11 +49,11 @@ public class Job {
         this.salary = salary;
     }
 
-    public String getUser_phone() {
-        return user_phone;
+    public String getOwner() {
+        return owner;
     }
 
-    public void setUser_phone(String user_phone) {
-        this.user_phone = user_phone;
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 }

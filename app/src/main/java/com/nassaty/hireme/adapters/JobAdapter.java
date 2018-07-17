@@ -18,6 +18,7 @@ import com.nassaty.hireme.activities.AppList;
 import com.nassaty.hireme.listeners.applicationAddedListener;
 import com.nassaty.hireme.model.Job;
 import com.nassaty.hireme.room.NewFavVModel;
+import com.nassaty.hireme.utils.AuthUtils;
 import com.nassaty.hireme.viewmodels.NewApplicationVModel;
 
 import java.util.List;
@@ -25,17 +26,17 @@ import java.util.List;
 public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 
     private Context context;
+    private AuthUtils authUtils;
     private List<Job> jobs;
-    private List<String> ids;
     private NewFavVModel newFavVModel;
     private NewApplicationVModel applicationVModel;
 
-    public JobAdapter(Context ctx, List<Job> jobs, List<String> ids) {
+    public JobAdapter(Context ctx, List<Job> jobs) {
         this.context = ctx;
         this.jobs = jobs;
-        this.ids = ids;
         this.newFavVModel = ViewModelProviders.of((FragmentActivity) context).get(NewFavVModel.class);
         this.applicationVModel = ViewModelProviders.of((FragmentActivity) context).get(NewApplicationVModel.class);
+        this.authUtils = new AuthUtils(context);
     }
 
     @Override
@@ -47,25 +48,34 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
     @Override
     public void onBindViewHolder(final JobViewHolder holder, int position) {
         final Job job = jobs.get(position);
-        final String ref = ids.get(position);
 
         holder.textTitle.setText(job.getTitle());
         holder.textDesc.setText(job.getDescription());
         holder.textSalary.setText(String.valueOf(job.getSalary()));
 
-        holder.setRef(ref);
-
+        holder.setRef(job.getId());
         holder.itemView.setTag(job);
+
+        if (job.getOwner().equals(authUtils.getCurrentUser().getUid())){
+            holder.setMine(true);
+        }else {
+            holder.setMine(false);
+        }
+
+        holder.edit_job.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //blah*2
+            }
+        });
 
         holder.add_application.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.triggerJobStatus(true);
-                holder.sendApplication(ref);
+//                holder.triggerJobStatus(true);
+                holder.sendApplication(job.getId());
             }
         });
-
-
 
         holder.fav.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +95,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         notifyDataSetChanged();
     }
 
+
     public void addtoFavorites(Job job){
         if (job == null){
             Toast.makeText(context, "no job to select", Toast.LENGTH_SHORT).show();
@@ -97,8 +108,10 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 
         private TextView textTitle, textDesc, textSalary, jobStatus;
         private Button add_application;
+        private Button edit_job;
         private View fav;
         private String ref;
+        private Boolean isMine;
 
 
         public JobViewHolder(View itemView) {
@@ -109,9 +122,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
             jobStatus = itemView.findViewById(R.id.job_status);
             fav = itemView.findViewById(R.id.fav);
             add_application = itemView.findViewById(R.id.add_application);
-
-            triggerJobStatus(false);
-
+            edit_job = itemView.findViewById(R.id.edit_job);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -134,7 +145,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
                 jobStatus.setText(context.getString(R.string.app_rejected));
                 jobStatus.setTextColor(Color.parseColor("#f44336"));
             } else {
-                triggerJobStatus(false);
+
             }
         }
 
@@ -177,6 +188,15 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
             });
         }
 
+        public void setMine(Boolean mine) {
+            if (mine){
+                edit_job.setVisibility(View.VISIBLE);
+                add_application.setVisibility(View.GONE);
+            }else {
+                edit_job.setVisibility(View.GONE);
+                add_application.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
 }

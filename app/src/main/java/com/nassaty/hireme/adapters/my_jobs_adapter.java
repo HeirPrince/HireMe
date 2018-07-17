@@ -22,13 +22,11 @@ public class my_jobs_adapter extends RecyclerView.Adapter<my_jobs_adapter.JobVie
 
     private Context context;
     private List<Job> jobs;
-    private List<String> ids;
     private jobListViewModel jListVModel;
 
-    public my_jobs_adapter(Context ctx, List<Job> jobs, List<String> ids) {
+    public my_jobs_adapter(Context ctx, List<Job> jobs) {
         this.context = ctx;
         this.jobs = jobs;
-        this.ids = ids;
         this.jListVModel = ViewModelProviders.of((FragmentActivity) context).get(jobListViewModel.class);
     }
 
@@ -41,13 +39,10 @@ public class my_jobs_adapter extends RecyclerView.Adapter<my_jobs_adapter.JobVie
     @Override
     public void onBindViewHolder(final my_jobs_adapter.JobViewHolder holder, final int position) {
         final Job job = jobs.get(position);
-        final String ref = ids.get(position);
 
         holder.textTitle.setText(job.getTitle());
         holder.textDesc.setText(job.getDescription());
         holder.textSalary.setText(String.valueOf(job.getSalary()));
-
-        holder.setRef(ref);
 
         holder.itemView.setTag(job);
 
@@ -103,10 +98,6 @@ public class my_jobs_adapter extends RecyclerView.Adapter<my_jobs_adapter.JobVie
 
         public String getRef() {
             return ref;
-        }
-
-        public void setRef(String ref) {
-            this.ref = ref;
         }
 
         @Override

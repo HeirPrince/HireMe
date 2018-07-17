@@ -70,34 +70,27 @@ public class myApplications extends Fragment {
         final List<Application> applications = new ArrayList<>();
         progress.setVisibility(View.VISIBLE);
 
+        final String phone = authUtils.getCurrentUser().getPhoneNumber();
+        final String uid = authUtils.getCurrentUser().getUid();
 
-        jobListViewModel.getJObsByUID(authUtils.getCurrentUser().getPhoneNumber(), new jobListListener() {
+        jobListViewModel.getJObsByUID(phone, new jobListListener() {
             @Override
             public void jobList(List<Job> jobs) {
                 if (jobs == null) {
-                    Toast.makeText(getContext(), "no jobs associated to this man", Toast.LENGTH_SHORT).show();
+                    for (Job job : jobs){
+                        if (job.getOwner().equals(phone)){
+                            viewModel.getAppByUID(String.valueOf(job.getId()), uid, new SingleAppListener() {
+                                @Override
+                                public void isFound(Boolean isFound, Application application) {
+                                    if (isFound && application != null){
+                                        applications.add(application);
+                                    }
+                                }
+                            });
+                        }
+                    }
                 } else {
                     Toast.makeText(getContext(), "found jobs associated to this man", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void refList(List<String> refs) {
-                if (refs != null) {
-                    for (String ref : refs) {
-                        viewModel.getAppByUID(ref,authUtils.getCurrentUser().getUid(), new SingleAppListener() {
-                            @Override
-                            public void isFound(Boolean isFound, Application application) {
-                                if (isFound && application != null) {
-                                    progress.setVisibility(View.GONE);
-                                    applications.add(application);
-                                } else {
-                                    Toast.makeText(getContext(), "no apps found", Toast.LENGTH_SHORT).show();
-                                }
-
-                            }
-                        });
-                    }
                 }
             }
 

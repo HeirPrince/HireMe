@@ -36,6 +36,7 @@ public class NewJobModel{
 
     public void insertJob(Job job){
         CollectionReference reference = firebaseFirestore.collection(Constants.jobRef);
+        job.setId(reference.getId());
         reference.add(job)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
@@ -52,7 +53,7 @@ public class NewJobModel{
     }
 
     public void deleteJob(String id){
-        //delete a job when in my jobs activity
+        //delete a job in my jobs activity
     }
 
     public void editJob(){
