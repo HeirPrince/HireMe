@@ -101,4 +101,11 @@ public class AuthUtils {
                     }
                 });
     }
+
+    public boolean isMine(String uid){
+        if (uid.equals(auth.getCurrentUser().getUid()))
+            return true;
+        else
+            return false;
+    }
 }

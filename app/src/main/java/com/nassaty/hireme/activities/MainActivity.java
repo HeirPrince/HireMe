@@ -2,27 +2,35 @@ package com.nassaty.hireme.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuInflater;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.PopupMenu;
-import android.widget.Toast;
 
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.nassaty.hireme.R;
-import com.nassaty.hireme.fragments.JobsList;
+import com.nassaty.hireme.fragments.Discover;
+import com.nassaty.hireme.fragments.Mine;
+import com.nassaty.hireme.fragments.Nearby;
 import com.nassaty.hireme.listeners.ProfileListener;
 import com.nassaty.hireme.utils.AuthUtils;
+import com.nassaty.hireme.utils.NonSwipableViewPager;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnLongClickListener, View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnLongClickListener, View.OnClickListener {
 
     private AuthUtils authUtils;
-    private View filter;
+    FloatingActionButton addNew;
+    BottomNavigationViewEx bottomNav;
+    NonSwipableViewPager viewPager;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,35 +38,16 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         setContentView(R.layout.activity_main);
         authUtils = new AuthUtils(this);
 
-        filter = findViewById(R.id.filter);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        filter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
-                MenuInflater inflater = popupMenu.getMenuInflater();
-                inflater.inflate(R.menu.filter_popup_menu, popupMenu.getMenu());
 
-                try {
-                    Field[] fields = popupMenu.getClass().getDeclaredFields();
-                    for (Field field : fields) {
-                        if ("mPopup".equals(field.getName())) {
-                            field.setAccessible(true);
-                            Object menuPopupHelper = field.get(popupMenu);
-                            Class<?> classPopupHelper = Class.forName(menuPopupHelper.getClass().getName());
-                            Method setForceIcons = classPopupHelper.getMethod("setForceShowIcon", boolean.class);
-                            setForceIcons.invoke(menuPopupHelper, true);
-                            break;
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        bottomNav = findViewById(R.id.bnve);
+        viewPager = findViewById(R.id.pager);
+        setupBottomNavigation(bottomNav);
 
-                popupMenu.setOnMenuItemClickListener(MainActivity.this);
-                popupMenu.show();
-            }
-        });
+        addNew = findViewById(R.id.addNew);
+        addNew.setOnClickListener(MainActivity.this);
 
         if (authUtils.checkAuth()){
             //Adding fragment
@@ -66,20 +55,15 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 @Override
                 public void isRegistered(Boolean state) {
                     if (state){
-                        JobsList fragment = new JobsList();
-                        FragmentManager fragmentManager = getSupportFragmentManager();
-                        FragmentTransaction transaction = fragmentManager.beginTransaction();
+                        return;
 
-                        transaction.replace(R.id.frag_container, fragment);
-                        transaction.addToBackStack(null);
-
-                        transaction.commit();
                     }else {
-                        startActivity(new Intent(MainActivity.this, Register.class));
-                        finish();
+                        authUtils.doSignIn(MainActivity.this);
                     }
                 }
             });
+
+            //init frag
 
         }else {
             finish();
@@ -88,26 +72,87 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 
     }
 
+    public void ui(){
+
+    }
+
+
+    public void setupBottomNavigation(BottomNavigationViewEx bottomNav){
+        bottomNav.enableAnimation(true);
+        bottomNav.enableItemShiftingMode(false);
+        bottomNav.enableShiftingMode(true);
+
+        //hide on scroll
+//        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNav.getLayoutParams();
+//        layoutParams.setBehavior(new BNavBehavior());
+
+        SlideAdapter adapter = new SlideAdapter(getSupportFragmentManager());
+        adapter.addFragment(new Discover());
+        adapter.addFragment(new Nearby());
+        adapter.addFragment(new Mine());
+
+        viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(3);
+
+        bottomNav.setupWithViewPager(viewPager);
+
+        ui();
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+
+        switch (id) {
+            case R.id.addNew:
+                startActivity(new Intent(MainActivity.this, AddNewJob.class));
+                //init frag
+                break;
+        }
+    }
+
     @Override
     public boolean onLongClick(View view) {
         return true;
     }
 
     @Override
-    public void onClick(View view) {
-        //on click
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     @Override
-    public boolean onMenuItemClick(MenuItem menuItem) {
-        switch (menuItem.getItemId()){
-            case R.id.action_profile:
-                Toast.makeText(this, "clicked me", Toast.LENGTH_SHORT).show();
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.action_notify:
+                startActivity(new Intent(MainActivity.this, Notifications.class));
                 break;
-            default:
-                return false;
+        }
+        return true;
+    }
+
+    class SlideAdapter extends FragmentStatePagerAdapter {
+
+        private List<Fragment> fragments = new ArrayList<>();
+
+        public SlideAdapter(FragmentManager fm) {
+            super(fm);
         }
 
-        return false;
+        @Override
+        public Fragment getItem(int position) {
+            return fragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragments.size();
+        }
+
+        public void addFragment(Fragment fragment){
+            fragments.add(fragment);
+        }
     }
 }

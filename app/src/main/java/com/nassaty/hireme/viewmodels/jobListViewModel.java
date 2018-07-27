@@ -9,9 +9,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.nassaty.hireme.listeners.SingleJobListener;
 import com.nassaty.hireme.listeners.applicationAddedListener;
 import com.nassaty.hireme.listeners.applicationRejectedListener;
 import com.nassaty.hireme.listeners.jobListListener;
@@ -35,7 +37,10 @@ public class jobListViewModel extends AndroidViewModel {
     }
 
     public void getJobList(final jobListListener listener){
-        final List<Job> jobs = new ArrayList<>();
+        final List<Job> other_jobs = new ArrayList<>();
+        final List<Job> my_jobs = new ArrayList<>();
+        final List<Job> expensive_jobs = new ArrayList<>();
+
 
         FirebaseFirestore.getInstance()
                 .collection(Constants.jobRef)
@@ -46,8 +51,8 @@ public class jobListViewModel extends AndroidViewModel {
                         for (QueryDocumentSnapshot doc : task.getResult()) {
                             if (doc != null) {
                                 Job job = doc.toObject(Job.class);
-                                jobs.add(job);
-                                listener.jobList(jobs);
+                                my_jobs.add(job);
+                                listener.jobList(my_jobs);
                             }
                         }
                     }
@@ -58,6 +63,7 @@ public class jobListViewModel extends AndroidViewModel {
 
                     }
                 });
+
     }
 
     public interface fetchListener {
@@ -226,6 +232,33 @@ public class jobListViewModel extends AndroidViewModel {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(getApplication(), "application not deleted", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public void getJobByRef(String ref, final SingleJobListener callback){
+        FirebaseFirestore.getInstance()
+                .collection(Constants.jobRef)
+                .document(ref)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()){
+                            DocumentSnapshot snapshot = task.getResult();
+                            if (snapshot.exists()){
+                                Job job = snapshot.toObject(Job.class);
+                                callback.foundJob(job);
+                            }else {
+                                callback.foundJob(null);
+                            }
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.foundJob(null);
                     }
                 });
     }

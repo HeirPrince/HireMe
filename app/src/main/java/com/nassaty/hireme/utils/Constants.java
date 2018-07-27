@@ -48,4 +48,29 @@ public class Constants {
     public String getRandomID() {
         return randomID;
     }
+
+    /*Pop menu with icons*
+    PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
+                MenuInflater inflater = popupMenu.getMenuInflater();
+                inflater.inflate(R.menu.filter_popup_menu, popupMenu.getMenu());
+
+                try {
+                    Field[] fields = popupMenu.getClass().getDeclaredFields();
+                    for (Field field : fields) {
+                        if ("mPopup".equals(field.getName())) {
+                            field.setAccessible(true);
+                            Object menuPopupHelper = field.get(popupMenu);
+                            Class<?> classPopupHelper = Class.forName(menuPopupHelper.getClass().getName());
+                            Method setForceIcons = classPopupHelper.getMethod("setForceShowIcon", boolean.class);
+                            setForceIcons.invoke(menuPopupHelper, true);
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                popupMenu.setOnMenuItemClickListener(MainActivity.this);
+                popupMenu.show();/
+     */
 }

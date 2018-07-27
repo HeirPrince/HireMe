@@ -11,4 +11,11 @@
     <string name="my_jobs">My Jobs</string>
     <string name="my_applications">My Applications</string>
     <string name="action_profile">Profile</string>
+
+    <!--Toolbar titles-->
+    <string name="title_discover">Discover</string>
+    <string name="title_nearby">NearBy</string>
+    <string name="title_mine">Mine</string>
+
+
 </resources>

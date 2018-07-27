@@ -14,4 +14,10 @@
         android:orderInCategory="200"
         android:title="@string/action_profile"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_notify"
+        android:orderInCategory="200"
+        android:title=""
+        app:showAsAction="always" />
 </menu>

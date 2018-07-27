@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.nassaty.hireme.R;
 import com.nassaty.hireme.activities.AppList;
+import com.nassaty.hireme.activities.EditJob;
 import com.nassaty.hireme.listeners.applicationAddedListener;
 import com.nassaty.hireme.model.Job;
 import com.nassaty.hireme.room.NewFavVModel;
@@ -65,7 +66,10 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         holder.edit_job.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //blah*2
+                Intent i = new Intent(context, EditJob.class);
+                i.putExtra("job_title", job.getTitle());
+                i.putExtra("ref", holder.getRef());
+                context.startActivity(i);
             }
         });
 

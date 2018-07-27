@@ -51,8 +51,17 @@ dependencies {
 
     //Tabs
     implementation 'com.github.loicteillard:EasyTabs:0.3'
+
     //Pop menu - Droppy
     implementation 'com.shehabic.droppy:Droppy:0.6.0@aar'
 
+    //Dialogs
+    implementation 'com.irozon.alertview:alertview:1.0.1'//waiting for usage
+
+    //Bottom navigation
+    implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
+
+    //Notification Badge
+    implementation 'q.rorbin:badgeview:1.1.0'
 }
 apply plugin: 'com.google.gms.google-services'

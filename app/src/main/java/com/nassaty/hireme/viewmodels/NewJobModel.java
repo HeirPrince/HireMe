@@ -7,22 +7,13 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.nassaty.hireme.listeners.jobListListener;
+import com.nassaty.hireme.listeners.updateListener;
 import com.nassaty.hireme.model.Job;
 import com.nassaty.hireme.utils.Constants;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import javax.annotation.Nullable;
+import java.util.Map;
 
 public class NewJobModel{
 
@@ -35,12 +26,14 @@ public class NewJobModel{
     }
 
     public void insertJob(Job job){
-        CollectionReference reference = firebaseFirestore.collection(Constants.jobRef);
-        job.setId(reference.getId());
-        reference.add(job)
-                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+        DocumentReference documentReference = firebaseFirestore.collection(Constants.jobRef).document();
+        String id = documentReference.getId();
+        DocumentReference reference = firebaseFirestore.collection(Constants.jobRef).document(id);
+        job.setId(id);
+        reference.set(job)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                    public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(context, "added successfully", Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -56,40 +49,54 @@ public class NewJobModel{
         //delete a job in my jobs activity
     }
 
-    public void editJob(){
-
-    }
-
-    public void getJobList(String phone, final jobListListener listListener){
-        final List<Job> jobs = new ArrayList<>();
-
-        CollectionReference collectionReference = FirebaseFirestore.getInstance()
-                .collection(Constants.jobRef)
-                .document(phone)
-                .collection(Constants.my_jobsRef);
-
-        collectionReference
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-
-                if (e == null)
-                    return;
-
-                for (DocumentSnapshot doc : Objects.requireNonNull(queryDocumentSnapshots)){
-                    if (doc.exists()){
-                        Toast.makeText(context, "im there", Toast.LENGTH_SHORT).show();
-                        Job job = doc.toObject(Job.class);
-                        jobs.add(job);
-                        listListener.jobList(jobs);
-                    }else {
-                        Toast.makeText(context, "im t", Toast.LENGTH_SHORT).show();
+    public void editJob(String ref, Map<String, Object> job, final updateListener listener){
+        //updates job's data
+        DocumentReference jobRef = firebaseFirestore.collection(Constants.jobRef).document(ref);
+        listener.isUpdating(true);
+        jobRef
+                .update(job)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            listener.isDone(true);
+                        }
                     }
-                }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        listener.isFailed(true);
+                    }
+                });
 
-            }
-        });
     }
+
+    public void editSalary(String ref, String field, Integer salary, final updateListener listener){
+        //updates job's salary
+        DocumentReference jobRef = firebaseFirestore.collection(Constants.jobRef).document(ref);
+        listener.isUpdating(true);
+        jobRef
+                .update(field, salary)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            listener.isDone(true);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        listener.isFailed(true);
+                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
 
 
 }
