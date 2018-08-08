@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/AppTheme.Material"
     tools:context="com.nassaty.hireme.activities.MainActivity">
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@+id/bnve">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -32,31 +41,11 @@
 
     </android.support.design.widget.AppBarLayout>
 
-
-
-    <LinearLayout
+    <com.nassaty.hireme.utils.NonSwipableViewPager
+        android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <com.nassaty.hireme.utils.NonSwipableViewPager
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
-            android:id="@+id/bnve"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_white"
-            app:elevation="4dp"
-            app:itemIconTint="@color/colorPrimary"
-            app:itemTextColor="@color/colorAccent"
-            app:layout_insetEdge="bottom"
-            app:menu="@menu/menu_bottom" />
-
-    </LinearLayout>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 
     <android.support.design.widget.FloatingActionButton
@@ -68,3 +57,17 @@
 
 
 </android.support.design.widget.CoordinatorLayout>
+
+    <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+        android:id="@+id/bnve"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="4dp"
+        app:itemIconTint="@color/color_states"
+        app:itemTextColor="@color/color_states"
+        app:itemBackground="@color/color_white"
+        app:layout_insetEdge="bottom"
+        app:menu="@menu/menu_bottom"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

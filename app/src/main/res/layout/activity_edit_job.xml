@@ -111,14 +111,6 @@
 
         </LinearLayout>
 
-        <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:onClick="update"
-            android:text="Update"/>
-
     </RelativeLayout>
 
 </RelativeLayout>

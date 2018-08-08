@@ -27,8 +27,6 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.android.support:design:26.1.0'
-    implementation 'com.google.firebase:firebase-firestore:17.0.2'
-    implementation 'com.google.firebase:firebase-auth:16.0.2'
     implementation 'com.android.support:support-v4:26.1.0'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     testImplementation 'junit:junit:4.12'
@@ -45,9 +43,16 @@ dependencies {
 
     //Firebase
     implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-firestore:17.0.4'
+    implementation 'com.google.firebase:firebase-auth:16.0.2'
+    implementation 'com.google.firebase:firebase-storage:16.0.1'
 
     //Firebase ui
     implementation 'com.firebaseui:firebase-ui-auth:4.0.1'
+
+    //Glide Image Downloader and resizer -- used to download images and resizing them
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
 
     //Tabs
     implementation 'com.github.loicteillard:EasyTabs:0.3'
@@ -63,5 +68,8 @@ dependencies {
 
     //Notification Badge
     implementation 'q.rorbin:badgeview:1.1.0'
+
+    //Circle image view
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 }
 apply plugin: 'com.google.gms.google-services'

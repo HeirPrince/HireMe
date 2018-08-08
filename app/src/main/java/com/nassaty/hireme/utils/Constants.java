@@ -7,6 +7,10 @@ import java.util.UUID;
 
 public class Constants {
 
+    //storage path
+    public static final String storagePath = "gs://hireme-4b36b.appspot.com";
+
+
     public static final String REQUESTED = "requested";
     public static final String ACCEPTED = "accepted";
     public static final String REJECTED = "rejected";

@@ -82,10 +82,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         bottomNav.enableItemShiftingMode(false);
         bottomNav.enableShiftingMode(true);
 
-        //hide on scroll
-//        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNav.getLayoutParams();
-//        layoutParams.setBehavior(new BNavBehavior());
-
         SlideAdapter adapter = new SlideAdapter(getSupportFragmentManager());
         adapter.addFragment(new Discover());
         adapter.addFragment(new Nearby());

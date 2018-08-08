@@ -16,6 +16,10 @@
     <string name="title_discover">Discover</string>
     <string name="title_nearby">NearBy</string>
     <string name="title_mine">Mine</string>
+    <string name="signup">SignUp</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
 
 
 </resources>

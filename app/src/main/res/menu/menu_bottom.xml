@@ -2,15 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/action_discover"
-        android:icon="@drawable/vector_discover"
-        android:title="@string/title_discover"/>
+        android:icon="@drawable/selector_vector_discover"
+        android:title="@string/title_discover"
+        android:checked="true"/>
 
     <item android:id="@+id/action_nearby"
-        android:icon="@drawable/vector_nearby"
+        android:icon="@drawable/selector_vector_nearby"
         android:title="@string/title_nearby"/>
 
     <item android:id="@+id/action_mine"
-        android:icon="@drawable/vector_mine"
+        android:icon="@drawable/selector_vector_mine"
         android:title="@string/title_mine"/>
 
 </menu>
