@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         setContentView(R.layout.activity_main);
         authUtils = new AuthUtils(this);
 
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R .id.toolbar);
         setSupportActionBar(toolbar);
 
 
@@ -54,12 +54,10 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             authUtils.checkRegister(authUtils.getCurrentUser().getPhoneNumber(), new ProfileListener() {
                 @Override
                 public void isRegistered(Boolean state) {
-                    if (state){
+                    if (state)
                         return;
-
-                    }else {
+                    else
                         authUtils.doSignIn(MainActivity.this);
-                    }
                 }
             });
 

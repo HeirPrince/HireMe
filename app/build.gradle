@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 24
     defaultConfig {
         applicationId 'com.nassaty.hireme'
         minSdkVersion 24
@@ -32,7 +32,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
     //Architecture components
     implementation 'android.arch.persistence.room:runtime:1.0.0'
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
@@ -40,35 +39,27 @@ dependencies {
     implementation 'android.arch.lifecycle:extensions:1.0.0'
     annotationProcessor "android.arch.lifecycle:compiler:1.0.0"
     implementation 'com.android.support:cardview-v7:26.1.0'
-
     //Firebase
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-firestore:17.0.4'
     implementation 'com.google.firebase:firebase-auth:16.0.2'
     implementation 'com.google.firebase:firebase-storage:16.0.1'
-
     //Firebase ui
     implementation 'com.firebaseui:firebase-ui-auth:4.0.1'
-
     //Glide Image Downloader and resizer -- used to download images and resizing them
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
-
     //Tabs
     implementation 'com.github.loicteillard:EasyTabs:0.3'
-
     //Pop menu - Droppy
     implementation 'com.shehabic.droppy:Droppy:0.6.0@aar'
-
     //Dialogs
-    implementation 'com.irozon.alertview:alertview:1.0.1'//waiting for usage
-
+    implementation 'com.irozon.alertview:alertview:1.0.1'
+    //waiting for usage
     //Bottom navigation
     implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
-
     //Notification Badge
     implementation 'q.rorbin:badgeview:1.1.0'
-
     //Circle image view
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 }
