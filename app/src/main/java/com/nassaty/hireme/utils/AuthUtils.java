@@ -3,20 +3,16 @@ package com.nassaty.hireme.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.nassaty.hireme.activities.AuthActivity;
 import com.nassaty.hireme.listeners.ProfileListener;
-import com.nassaty.hireme.model.User;
 
 public class AuthUtils {
     private Context context;
@@ -42,26 +38,6 @@ public class AuthUtils {
         else return false;
     }
 
-    public void registerUser(User user, final ProfileListener callback){
-        userRef = FirebaseFirestore.getInstance().collection("users");
-
-        userRef.add(user)
-                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
-                        if (task.isSuccessful()){
-                            callback.isRegistered(true);
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callback.isRegistered(false);
-                    }
-                });
-    }
-
     public FirebaseUser getCurrentUser(){
         return auth.getCurrentUser();
     }
@@ -84,10 +60,10 @@ public class AuthUtils {
         }
     }
 
-    public void checkRegister(String phone, final ProfileListener callback) {
+    public void checkRegister(String uid, final ProfileListener callback) {
         userRef = FirebaseFirestore.getInstance().collection("users");
 
-        userRef.whereEqualTo("phone_number", phone)
+        userRef.whereEqualTo("uid", uid)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -108,4 +84,5 @@ public class AuthUtils {
         else
             return false;
     }
+
 }

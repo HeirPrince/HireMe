@@ -9,12 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Material">
-        <activity
-            android:name=".activities.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.Material" />
-        <activity android:name=".activities.AddNewJob" />
-        <activity android:name=".activities.Favorites" />
         <activity android:name=".activities.AuthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,13 +16,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.Material" />
+        <activity android:name=".activities.AddNewJob" />
+        <activity android:name=".activities.Favorites" />
         <activity android:name=".activities.AppList" />
-        <activity android:name=".activities.Register"></activity>
         <activity android:name=".activities.Profile" />
         <activity android:name=".activities.EditJob" />
         <activity android:name=".activities.Notifications" />
-        <activity android:name=".activities.PhoneActivity" />
-        <activity android:name=".activities.JobDetails"></activity>
+        <activity android:name=".activities.JobDetails" />
+        <activity android:name=".activities.SetInfo" />
+        <activity android:name=".activities.MyJobEditor"></activity>
     </application>
 
 </manifest>

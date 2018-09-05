@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:enabled="false"
-                android:hint="Job Title"/>
+                android:hint="@string/job_title"/>
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:enabled="false"
-                android:hint="Job Description"/>
+                android:hint="@string/job_description"/>
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:enabled="false"
-                android:hint="Job Salary"/>
+                android:hint="@string/job_salary"/>
 
             <FrameLayout
                 android:layout_width="wrap_content"

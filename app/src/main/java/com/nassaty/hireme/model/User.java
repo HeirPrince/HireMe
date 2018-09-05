@@ -4,9 +4,19 @@ public class User {
 
     private String user_name;
     private String phone_number;
+    private String email;
     private String UID;
+    private String imageTitle;
 
     public User() {
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUser_name() {
@@ -31,5 +41,13 @@ public class User {
 
     public String getUID() {
         return UID;
+    }
+
+    public String getImageTitle() {
+        return imageTitle;
+    }
+
+    public void setImageTitle(String imageTitle) {
+        this.imageTitle = imageTitle;
     }
 }

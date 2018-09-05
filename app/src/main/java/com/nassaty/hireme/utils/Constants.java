@@ -20,10 +20,16 @@ public class Constants {
 
     public static final String applicationRef = "applications";
     public static final String jobRef = "jobs";
+    public static final String userRef = "users";
     public static final String my_jobsRef = "my_jobs";
     public static final String accepted = "accepted_applications";
     public static final String denied = "denied_applications";
     public static String randomID = UUID.randomUUID().toString();
+    public static  String imageFolder = "images";
+
+    public static String getImageFolder() {
+        return imageFolder;
+    }
 
     public CollectionReference getRequestedApps(String job_id) {
         CollectionReference ref = FirebaseFirestore.getInstance()

@@ -127,7 +127,7 @@ public class jobListViewModel extends AndroidViewModel {
     }
 
     public void sendApplication(final Application application, final applicationAddedListener addedListener) {
-        changeAppState(application, true, false, false);
+//        changeAppState(application, true, false, false);
         FirebaseFirestore.getInstance()
                 .collection(Constants.applicationRef)
                 .document(getRef())
@@ -158,7 +158,7 @@ public class jobListViewModel extends AndroidViewModel {
     }
 
     public void shiftToAccepted(Application application, final applicationAddedListener listener) {
-        changeAppState(application, false, true, false);
+//        changeAppState(application, false, true, false);
         FirebaseFirestore.getInstance()
                 .collection(Constants.applicationRef)
                 .document(application.getJob_id())
@@ -181,7 +181,7 @@ public class jobListViewModel extends AndroidViewModel {
     }
 
     public void rejectApplication(final Application application, final applicationRejectedListener listener) {
-        changeAppState(application, false, false, true);
+//        changeAppState(application, false, false, true);
         FirebaseFirestore.getInstance()
                 .collection(Constants.applicationRef)
                 .document(getRef())
@@ -211,11 +211,11 @@ public class jobListViewModel extends AndroidViewModel {
                 });
     }
 
-    public void changeAppState(Application application, boolean sent, boolean accepted, boolean rejected) {
-        application.setSent(sent);
-        application.setAccepted(accepted);
-        application.setRejected(rejected);
-    }
+//    public void changeAppState(Application application, boolean sent, boolean accepted, boolean rejected) {
+//        application.setSent(sent);
+//        application.setAccepted(accepted);
+//        application.setRejected(rejected);
+//    }
 
     public void deleteJob(String ref) {
         FirebaseFirestore.getInstance()

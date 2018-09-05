@@ -7,33 +7,113 @@
     android:layout_height="match_parent"
     tools:context="com.nassaty.hireme.activities.AddNewJob">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/jobTitle"
-        android:hint="Job Title"/>
+    <include layout="@layout/layout_toolbar"/>
 
-    <EditText
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/jobDescription"
-        android:layout_below="@id/jobTitle"
-        android:hint="Job Description"/>
+        android:orientation="vertical"
+        android:id="@+id/edit"
+        android:layout_marginTop="4dp"
+        android:layout_below="@+id/toolbar"
+        android:padding="16dp">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/jobSalary"
-        android:layout_below="@id/jobDescription"
-        android:hint="Job Salary"/>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:counterMaxLength="250"
+            app:counterEnabled="true">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/jobTitle"
+                android:hint="@string/job_title"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/job_description"
+            android:layout_marginTop="4dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/jobDescription"
+                android:layout_below="@id/jobTitle" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/job_salary"
+            android:layout_marginTop="4dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/jobSalary"
+                android:layout_below="@id/jobDescription"
+                android:inputType="numberDecimal"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:spinnerMode="dropdown"
+            android:layout_marginTop="4dp"
+            android:id="@+id/spinner_cat"/>
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="Can it be done ,ore than once?"/>
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/more_times"/>
+
+            <com.shalan.mohamed.itemcounterview.IncDecView
+                android:id="@+id/itemCounter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="4dp"
+                app:border_width="0dp"
+                app:dec_icon="@drawable/ic_remove"
+                app:inc_icon="@drawable/ic_add"
+                app:inc_dec_button_color="@color/colorPrimary"
+                app:counterValueColor="@color/colorAccent"
+                app:startCounterValue="1"
+                android:visibility="gone"
+                android:layout_below="@+id/more_times"
+                android:layout_marginTop="10dp"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/jobSalary"
+        android:layout_below="@+id/edit"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="6dp"
-        android:text="Add"
+        android:text="@string/button_add"
         android:onClick="addJob"/>
 
 </RelativeLayout>

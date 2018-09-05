@@ -91,7 +91,6 @@ public class Discover extends Fragment {
                     expensive_jobs.clear();
                     for (Job job : jobs){
                         if (job.getSalary() > 100){
-                            Toast.makeText(getContext(), job.getTitle(), Toast.LENGTH_SHORT).show();
                             expensive_jobs.add(job);
                             section_expensive.setJobs(expensive_jobs);
                             section_expensive.setSectionLabel("Jobs we like");
@@ -113,11 +112,11 @@ public class Discover extends Fragment {
 
     public void refreshLists(List<Job> jobs, List<Section> sections){
         if (!jobs.isEmpty() && !sections.isEmpty()){
-            sections.clear();
             jobs.clear();
+            sections.clear();
             setLoading(false);
         }else {
-            setLoading(true);
+            setLoading(false);
         }
     }
 

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:fitsSystemWindows="true"
+    tools:context=".activities.SetInfo">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/welcome_title_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:textSize="30sp"
+        android:id="@+id/msg"
+        android:fontFamily="@font/mercy"/>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/msg"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/img_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/profile_space"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/job_search"/>
+
+        <com.github.florent37.shapeofview.shapes.CircleView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:elevation="@dimen/elevation_normal"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="4dp">
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_white"
+                android:src="@drawable/vector_camera"
+                android:onClick="upload"/>
+
+        </com.github.florent37.shapeofview.shapes.CircleView>
+
+    </FrameLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/username_layout"
+        android:layout_marginTop="16dp"
+        android:hint="@string/hint_username"
+        app:hintAnimationEnabled="true"
+        app:counterMaxLength="40"
+        app:counterEnabled="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/img_content">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/username"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/signup_btn">
+
+        <ProgressBar
+            android:id="@+id/horizontal_progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:indeterminate="false"
+            android:max="100"
+            android:minHeight="@dimen/fui_wrapper_padding_horiz"
+            android:progress="2"
+            android:visibility="gone"
+            android:progressBackgroundTint="@color/colorPrimaryDark" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Status"
+            android:id="@+id/progress_status"/>
+
+    </LinearLayout>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/username_layout"
+        android:layout_below="@+id/username_layout"
+        android:onClick="registerUSer"
+        android:text="@string/welcome_button_text"
+        android:id="@+id/signup_btn"/>
+
+
+</RelativeLayout>

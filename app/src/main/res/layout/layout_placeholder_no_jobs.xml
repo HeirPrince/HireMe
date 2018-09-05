@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="No jobs found"/>
+            android:text="@string/placeholder_jobs"/>
 
         <Button
             android:id="@+id/btnRetry"
@@ -30,7 +30,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="12dp"
             android:background="@color/color_white"
-            android:text="Retry"
+            android:text="@string/button_retry"
             android:textColor="@color/colorAccent"/>
 
     </LinearLayout>

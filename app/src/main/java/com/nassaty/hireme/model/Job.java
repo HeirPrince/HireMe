@@ -12,6 +12,7 @@ public class Job {
     @PrimaryKey
     private int salary;
     private String owner;
+    private String category;
 
 
     public Job() {
@@ -55,5 +56,13 @@ public class Job {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

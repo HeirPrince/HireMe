@@ -38,7 +38,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:behavior_overlapTop="32dp"
-        app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="6dp">
+
+            <include layout="@layout/layout_content_job_details"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include layout="@layout/layout_content_application_list"/>
+
+                <include layout="@layout/layout_contact_item"/>
+
+                <include layout="@layout/layout_add_review"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 

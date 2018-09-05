@@ -23,8 +23,12 @@
           }
         },
         {
-          "client_id": "497212096426-6vb10p501247s8b4ruhqn9g0otc2k8le.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "497212096426-gsvp9q8n8t3pcnvvu2i3aajpul9gfql9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nassaty.hireme",
+            "certificate_hash": "260d703ec7880002cd6d0e51f953ea8ef0d38e92"
+          }
         },
         {
           "client_id": "497212096426-6vb10p501247s8b4ruhqn9g0otc2k8le.apps.googleusercontent.com",

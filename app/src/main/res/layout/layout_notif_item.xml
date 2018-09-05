@@ -22,9 +22,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/delete_notif"
+        android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"
-        android:layout_toRightOf="@+id/notif_icon"
+        android:layout_toEndOf="@+id/notif_icon"
+        android:layout_toStartOf="@+id/delete_notif"
         android:orientation="vertical">
 
 
@@ -47,9 +48,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="10dp"
-                android:text="Prince Heir"/>
+                android:text="@string/developer_names"/>
 
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/content"/>
 
     </LinearLayout>
 

@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.nassaty.hireme.R;
@@ -41,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         toolbar = findViewById(R .id.toolbar);
         setSupportActionBar(toolbar);
 
-
         bottomNav = findViewById(R.id.bnve);
         viewPager = findViewById(R.id.pager);
         setupBottomNavigation(bottomNav);
@@ -51,17 +51,15 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 
         if (authUtils.checkAuth()){
             //Adding fragment
-            authUtils.checkRegister(authUtils.getCurrentUser().getPhoneNumber(), new ProfileListener() {
+            authUtils.checkRegister(authUtils.getCurrentUser().getUid(), new ProfileListener() {
                 @Override
                 public void isRegistered(Boolean state) {
                     if (state)
-                        return;
+                        Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
                     else
                         authUtils.doSignIn(MainActivity.this);
                 }
             });
-
-            //init frag
 
         }else {
             finish();

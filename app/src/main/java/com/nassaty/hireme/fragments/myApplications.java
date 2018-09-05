@@ -18,7 +18,9 @@ import com.nassaty.hireme.listeners.SingleAppListener;
 import com.nassaty.hireme.listeners.jobListListener;
 import com.nassaty.hireme.model.Application;
 import com.nassaty.hireme.model.Job;
+import com.nassaty.hireme.utils.ApplicationUtils;
 import com.nassaty.hireme.utils.AuthUtils;
+import com.nassaty.hireme.utils.JobUtils;
 import com.nassaty.hireme.viewmodels.AppListVModel;
 import com.nassaty.hireme.viewmodels.jobListViewModel;
 
@@ -38,6 +40,8 @@ public class myApplications extends Fragment {
     private AuthUtils authUtils;
     private List<Application> applications;
     private ProgressBar progress;
+    private ApplicationUtils applicationUtils;
+    private JobUtils jobUtils;
 
     public myApplications() {
         // Required empty public constructor
@@ -50,6 +54,9 @@ public class myApplications extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_applications, container, false);
         authUtils = new AuthUtils(getContext());
+        applicationUtils = new ApplicationUtils();
+        jobUtils = new JobUtils();
+
         applications = new ArrayList<>();
         viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(AppListVModel.class);
         jobListViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(jobListViewModel.class);
@@ -59,9 +66,8 @@ public class myApplications extends Fragment {
         app_list.setHasFixedSize(true);
 
         progress = v.findViewById(R.id.progress);
-        progress.setVisibility(View.VISIBLE);
 
-        getData();
+        getApps();
 
         return v;
     }
@@ -98,6 +104,26 @@ public class myApplications extends Fragment {
 
         adapter = new my_applications_adapter(getContext(), applications);
         app_list.setAdapter(adapter);
+    }
+
+    public void getApps(){
+        final String uid = authUtils.getCurrentUser().getUid();
+        progress.setVisibility(View.VISIBLE);
+
+        applicationUtils.getAppsByUid(uid, new ApplicationUtils.onAppFoundListener() {
+            @Override
+            public void foundApp(List<Application> applications) {
+                if (applications != null){
+                    progress.setVisibility(View.GONE);
+                    adapter = new my_applications_adapter(getContext(), applications);
+                    app_list.setAdapter(adapter);
+                }
+                else
+                    Toast.makeText(getContext(), "null", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 }
 

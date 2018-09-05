@@ -13,6 +13,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <!--TODO all child textviews will be == null + the child of this parent-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"

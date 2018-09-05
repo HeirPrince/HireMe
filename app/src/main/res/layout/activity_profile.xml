@@ -23,12 +23,14 @@
 
         </FrameLayout>
 
+        <!--TODO the below linear layout's textviews text is empty-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/profile_pic_layout"
             android:orientation="vertical">
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -73,13 +75,13 @@
             <com.loicteillard.easytabs.EasyTabTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/my_jobs"
+                android:text="@string/job_mine"
                 android:textAllCaps="true"
                 easytabs:etab_selected_color="@color/colorAccent" />
             <com.loicteillard.easytabs.EasyTabTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/my_applications"
+                android:text="@string/application_mine"
                 android:textAllCaps="true"
                 easytabs:etab_selected_color="@color/colorAccent" />
         </com.loicteillard.easytabs.EasyTabs>

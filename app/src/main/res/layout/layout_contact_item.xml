@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/contact_card"
+    android:layout_marginBottom="10dp"
+    android:layout_below="@+id/application_list_card">
+
+    <RelativeLayout
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CONTACT"
+            android:textColor="@color/color_black"
+            android:textStyle="bold"
+            android:id="@+id/title"/>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:layout_below="@+id/title"
+            android:layout_marginTop="15dp">
+
+            <View android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/vector_map_marker"
+                android:layout_gravity="fill"
+                android:backgroundTint="@color/colorAccent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_gravity="center_vertical"
+                android:text="KG 144 | Ave 20, Zindiro"/>
+
+            <View android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/vector_mail"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="@color/colorAccent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_gravity="center_vertical"
+                android:text="prinheir9@gmail.com"/>
+
+            <View android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/vector_call"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="@color/colorAccent"/>
+
+            <TextView
+                android:text="+250782085695"/>
+
+            <View android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/vector_attachments"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="@color/colorAccent"/>
+
+            <TextView
+                android:text="heirp@yahoo.com"/>
+
+        </GridLayout>
+
+    </RelativeLayout>
+
+
+
+</android.support.v7.widget.CardView>

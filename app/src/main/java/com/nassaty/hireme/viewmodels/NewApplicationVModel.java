@@ -7,6 +7,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.nassaty.hireme.listeners.applicationAddedListener;
 import com.nassaty.hireme.model.Application;
@@ -32,20 +33,15 @@ public class NewApplicationVModel extends AndroidViewModel {
         Application application = new Application();
         application.setJob_id(ref_id);
         application.setId(UUID.randomUUID().toString());
-        application.setAccepted(false);
-        application.setRejected(false);
-        application.setSent(true);
+        application.setStatusCode(1);
         application.setSender(authUtils.getCurrentUser().getUid());
 
         FirebaseFirestore.getInstance()
                 .collection(Constants.applicationRef)
-                .document(ref_id)
-                .collection(Constants.REQUESTED)
-                .document(application.getId())
-                .set(application)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                .add(application)
+                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
                         if (task.isSuccessful())
                             addedListener1.applicationAdded(true);
                     }

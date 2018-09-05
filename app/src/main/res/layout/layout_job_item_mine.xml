@@ -1,79 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/card"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_margin="6dp">
+        android:layout_height="120dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        app:cardCornerRadius="0dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:padding="10dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="@string/developer_names"
+                android:textColor="@color/color_black"
+                android:textSize="22sp" />
+
+            <LinearLayout
+                android:id="@+id/post"
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textTitle"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="TextView"
-                    android:textColor="#000"
-                    android:textStyle="bold"/>
+                    android:layout_marginTop="2dp"
+                    android:text="Posted on"
+                    android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/textSalary"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/date"
+                    android:layout_width="63dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="end"
-                    android:layout_marginRight="10dp"
-                    android:layout_toStartOf="@+id/fav"
-                    android:text="TextView"
-                    android:textColor="#000"
-                    android:textStyle="bold" />
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="2dp"
+                    android:text="Aug, 15"
+                    android:textColor="@color/color_lighter_dark"
+                    android:textSize="12sp" />
 
-                <View
-                    android:id="@+id/fav"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/favorite" />
+            </LinearLayout>
 
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/textDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="TextView"/>
-
-            <FrameLayout
+            <com.github.florent37.shapeofview.shapes.RoundRectView
+                android:id="@+id/type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right">
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:elevation="4dp"
+                app:shape_roundRect_bottomLeftRadius="4dp"
+                app:shape_roundRect_bottomRightRadius="4dp"
+                app:shape_roundRect_topLeftRadius="4dp"
+                app:shape_roundRect_topRightRadius="4dp">
 
-                <Button
-                    android:id="@+id/delete_application"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:text="delete"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorPrimary"
+                    android:padding="4dp">
 
-            </FrameLayout>
+                    <TextView
+                        android:id="@+id/date_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="Full time"
+                        android:layout_margin="2dp"
+                        android:textColor="@color/color_white" />
 
-        </LinearLayout>
+                </RelativeLayout>
+
+            </com.github.florent37.shapeofview.shapes.RoundRectView>
+
+
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:text="Kigali" />
+
+            <View
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/vector_edit"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/edit"/>
+
+        </RelativeLayout>
 
     </android.support.v7.widget.CardView>
 

@@ -1,25 +1,55 @@
 <resources>
     <string name="app_name">HireMe</string>
-    <string name="action_favorites">Favorites</string>
-    <string name="action_view_applications">Applications</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="menu_favorites">Favorites</string>
+    <string name="menu_view_applications">Applications</string>
+
+    <!-- TODO: Remove or change this placeholder text (to be removed after populating all fragments -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="app_sent">Sent</string>
-    <string name="app_accepted">Accepted</string>
-    <string name="app_rejected">Rejected</string>
-    <string name="my_jobs">My Jobs</string>
-    <string name="my_applications">My Applications</string>
-    <string name="action_profile">Profile</string>
+
+    <string name="application_sent">Sent</string>
+    <string name="application_accepted">Accepted</string>
+    <string name="application_rejected">Rejected</string>
+
+
+    <string name="application_accept">ACCEPT</string>
+    <string name="application_reject">REJECT</string>
+    <string name="application_mine">My Applications</string>
+
 
     <!--Toolbar titles-->
-    <string name="title_discover">Discover</string>
-    <string name="title_nearby">NearBy</string>
-    <string name="title_mine">Mine</string>
-    <string name="signup">SignUp</string>
-    <string name="username">Username</string>
-    <string name="password">Password</string>
-    <string name="email">Email</string>
+    <string name="bnav_discover">Discover</string>
+    <string name="bnav_nearby">NearBy</string>
+    <string name="bnav_profile">Mine</string>
+
+    <string name="profile_signup">SignUp</string>
+    <string name="profile_title">Profile</string>
+
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_email">Email</string>
+
+    <string name="placeholder_loading">Please wait…</string>
+    <string name="placeholder_jobs">No jobs found</string>
+    <string name="placeholder_loading_content">Problem loading content</string>
+    <string name="placeholder_lorem">Lorem ipsum dola sit ametdfsdfsdfsdfsdfsdfsfsdfsdfsfdssdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsd.</string>
+
+    <string name="job_title">Job Title(250 characters max)</string>
+    <string name="job_description">Job Description</string>
+    <string name="job_salary">How much are you willing to pay?(in RWF)</string>
+    <string name="job_mine">My Jobs</string>
+
+    <string name="button_add">Add</string>
+    <string name="button_retry">Retry</string>
+    <string name="button_show_all">Show All</string>
+
+    <string name="welcome_title_text">Set Profile</string>
+    <string name="welcome_button_text">Register</string>
+
+    <string name="developer_names">Prince Heir</string>
+    <string name="application_applicants">Applicants</string>
+    <string name="label_description">Description</string>
+    <string name="label_reviews">Reviews</string>
 
 
 </resources>

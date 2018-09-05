@@ -4,7 +4,10 @@ public class Application {
     private String job_id;
     private String id;
     private String sender;
-    private boolean isSent, isAccepted, isRejected;
+    private int statusCode;
+
+    public Application() {
+    }
 
     public String getJob_id() {
         return job_id;
@@ -30,27 +33,11 @@ public class Application {
         this.sender = sender;
     }
 
-    public boolean isSent() {
-        return isSent;
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public void setSent(boolean sent) {
-        isSent = sent;
-    }
-
-    public boolean isAccepted() {
-        return isAccepted;
-    }
-
-    public void setAccepted(boolean accepted) {
-        isAccepted = accepted;
-    }
-
-    public boolean isRejected() {
-        return isRejected;
-    }
-
-    public void setRejected(boolean rejected) {
-        isRejected = rejected;
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 }

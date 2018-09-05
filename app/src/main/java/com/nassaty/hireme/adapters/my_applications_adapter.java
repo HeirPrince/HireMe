@@ -10,73 +10,70 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.nassaty.hireme.R;
-import com.nassaty.hireme.listeners.applicationAddedListener;
-import com.nassaty.hireme.listeners.applicationRejectedListener;
 import com.nassaty.hireme.model.Application;
+import com.nassaty.hireme.model.Job;
+import com.nassaty.hireme.model.User;
+import com.nassaty.hireme.utils.JobUtils;
+import com.nassaty.hireme.utils.StorageUtils;
+import com.nassaty.hireme.utils.UserUtils;
 import com.nassaty.hireme.viewmodels.jobListViewModel;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class my_applications_adapter extends RecyclerView.Adapter<my_applications_adapter.ViewHolder> {
 
     List<Application> applications;
     jobListViewModel applistVModel;
+    UserUtils userUtils;
+    JobUtils jobUtils;
+    StorageUtils storageUtils;
+
     private Context context;
 
     public my_applications_adapter(Context context, List<Application> applications) {
         this.context = context;
         this.applications = applications;
+        this.userUtils = new UserUtils();
+        this.jobUtils = new JobUtils();
+        this.storageUtils = new StorageUtils(context);
+
         this.applistVModel = ViewModelProviders.of((FragmentActivity) context).get(jobListViewModel.class);
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_application_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_application_item_mine, parent, false);
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         final Application application = applications.get(position);
-        holder.app_id.setText(application.getJob_id());
-
-        holder.accept.setOnClickListener(new View.OnClickListener() {
+        jobUtils.getJobById(application.getJob_id(), new JobUtils.onJobFoundListener() {
             @Override
-            public void onClick(View view) {
-                applistVModel.sendApplication(application, new applicationAddedListener() {
-                    @Override
-                    public void applicationAdded(Boolean state) {
-                        if (state){
-                            removeApplication(position);
-                            holder.accept.setVisibility(View.GONE);
-                        }else {
-                            Toast.makeText(context, "app not accepted", Toast.LENGTH_SHORT).show();
+            public void foundJob(Job job) {
+                if (job != null){
+                    holder.job_title.setText(job.getTitle());
+
+                    userUtils.getUserByUID(job.getOwner(), new UserUtils.foundUser() {
+                        @Override
+                        public void user(User user) {
+                            if (user != null){
+                                holder.user_name.setText(user.getUser_name());
+                                holder.loadImage(user.getUID(), user.getImageTitle());
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         });
 
-        holder.reject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                applistVModel.rejectApplication(application, new applicationRejectedListener() {
-                    @Override
-                    public void isRejected(Boolean state) {
-                        if (state){
-                            removeApplication(position);
-                            Toast.makeText(context, "application rejected", Toast.LENGTH_SHORT).show();
-                        }else {
-                            Toast.makeText(context, "application not rejected", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-        });
     }
 
     @Override
@@ -93,14 +90,21 @@ public class my_applications_adapter extends RecyclerView.Adapter<my_application
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView app_id;
-        Button accept, reject;
+        TextView app_id, user_name, job_title;
+        CircleImageView user_image;
+        Button view, delete;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            app_id = itemView.findViewById(R.id.app_id);
-            accept = itemView.findViewById(R.id.accept);
-            reject = itemView.findViewById(R.id.reject);
+            user_name = itemView.findViewById(R.id.user_name);
+            user_image = itemView.findViewById(R.id.user_image);
+            job_title = itemView.findViewById(R.id.job_title);
+        }
+
+        public void loadImage(String uid, String imageTitle) {
+            Glide.with(context)
+                    .load(storageUtils.getUserProfileImageRef(uid, imageTitle))
+                    .into(user_image);
         }
     }
 }

@@ -8,11 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.nassaty.hireme.R;
-import com.nassaty.hireme.activities.AppList;
+import com.nassaty.hireme.activities.MyJobEditor;
 import com.nassaty.hireme.model.Job;
 import com.nassaty.hireme.viewmodels.jobListViewModel;
 
@@ -41,18 +40,8 @@ public class my_jobs_adapter extends RecyclerView.Adapter<my_jobs_adapter.JobVie
         final Job job = jobs.get(position);
 
         holder.textTitle.setText(job.getTitle());
-        holder.textDesc.setText(job.getDescription());
-        holder.textSalary.setText(String.valueOf(job.getSalary()));
 
         holder.itemView.setTag(job);
-
-        holder.delete_application.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                holder.deleteJob();
-                removeJob(position);
-            }
-        });
 
     }
 
@@ -74,22 +63,18 @@ public class my_jobs_adapter extends RecyclerView.Adapter<my_jobs_adapter.JobVie
 
     public class JobViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView textTitle, textDesc, textSalary;
-        private Button delete_application;
+        private TextView textTitle;
         private String ref;
 
 
         public JobViewHolder(View itemView) {
             super(itemView);
             textTitle = itemView.findViewById(R.id.textTitle);
-            textDesc = itemView.findViewById(R.id.textDesc);
-            textSalary = itemView.findViewById(R.id.textSalary);
-            delete_application = itemView.findViewById(R.id.delete_application);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent i = new Intent(context, AppList.class);
+                    Intent i = new Intent(context, MyJobEditor.class);
                     i.putExtra("ref_id", ref);
                     context.startActivity(i);
                 }
