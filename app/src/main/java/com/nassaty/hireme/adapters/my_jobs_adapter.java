@@ -43,6 +43,15 @@ public class my_jobs_adapter extends RecyclerView.Adapter<my_jobs_adapter.JobVie
 
         holder.itemView.setTag(job);
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(context, MyJobEditor.class);
+                i.putExtra("ref_id", job.getId());
+                context.startActivity(i);
+            }
+        });
+
     }
 
     @Override
@@ -64,25 +73,11 @@ public class my_jobs_adapter extends RecyclerView.Adapter<my_jobs_adapter.JobVie
     public class JobViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView textTitle;
-        private String ref;
 
 
         public JobViewHolder(View itemView) {
             super(itemView);
             textTitle = itemView.findViewById(R.id.textTitle);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(context, MyJobEditor.class);
-                    i.putExtra("ref_id", ref);
-                    context.startActivity(i);
-                }
-            });
-        }
-
-        public String getRef() {
-            return ref;
         }
 
         @Override
@@ -93,8 +88,8 @@ public class my_jobs_adapter extends RecyclerView.Adapter<my_jobs_adapter.JobVie
             }
         }
 
-        private void deleteJob() {
-            jListVModel.deleteJob(getRef());
-        }
+//        private void deleteJob() {
+//            jListVModel.deleteJob(getRef());
+//        }
     }
 }

@@ -57,7 +57,7 @@ public class JobDetails extends AppCompatActivity {
         authUtils = new AuthUtils(this);
         firebaseStorage = FirebaseStorage.getInstance();
         applicationUtils = new ApplicationUtils();
-        reviewUtils = new ReviewUtils();
+        reviewUtils = new ReviewUtils(this);
 
         userVModel = new UserVModel();
         jobVmodel = ViewModelProviders.of(Objects.requireNonNull(this)).get(jobListViewModel.class);

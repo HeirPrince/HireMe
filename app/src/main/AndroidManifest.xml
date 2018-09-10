@@ -28,7 +28,8 @@
         <activity android:name=".activities.Notifications" />
         <activity android:name=".activities.JobDetails" />
         <activity android:name=".activities.SetInfo" />
-        <activity android:name=".activities.MyJobEditor"></activity>
+        <activity android:name=".activities.MyJobEditor" />
+        <activity android:name=".intentActivities.replyReview"></activity>
     </application>
 
 </manifest>

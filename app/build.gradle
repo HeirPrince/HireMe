@@ -85,6 +85,10 @@ dependencies {
     //Day view
     implementation 'com.github.migellal:dayview:0.0.1'
 
+    //Material dialogs
+    implementation 'com.afollestad.material-dialogs:core:2.0.0-alpha07'
+    implementation 'com.afollestad.material-dialogs:input:2.0.0-alpha06'
+
     //Push down btn animation
     implementation('com.github.thekhaeng:pushdown-anim-click:1.1.1') {
         exclude group: 'com.android.support'

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/notification_content"
+        android:textSize="20sp"
+        android:textColor="@color/colorAccent"
+        android:text="Prince added a review to your job"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/notification_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:backgroundTint="@color/colorAccent"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/vector_time"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="11:05 PM"
+                android:id="@+id/time"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="4dp"/>
+
+        </LinearLayout>
+
+     </LinearLayout>
+
+    <View
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:backgroundTint="@color/colorAccent"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="8dp"
+        android:id="@+id/reply"
+        android:background="@drawable/vector_reply" />
+
+</RelativeLayout>

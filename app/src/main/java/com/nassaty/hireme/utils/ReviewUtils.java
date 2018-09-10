@@ -1,5 +1,6 @@
 package com.nassaty.hireme.utils;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -10,7 +11,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.nassaty.hireme.model.Job;
+import com.nassaty.hireme.model.Notif;
 import com.nassaty.hireme.model.Review;
+import com.nassaty.hireme.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +23,22 @@ public class ReviewUtils {
 
     FirebaseFirestore firebaseFirestore;
     CollectionReference rev;
+    private AuthUtils authUtils;
+    private NotificationUtils notificationUtils;
+    private TimeUtils timeUtils;
+    private UserUtils userUtils;
+    private JobUtils jobUtils;
+    Context context;
 
-    public ReviewUtils() {
+    public ReviewUtils(Context context) {
+        this.context = context;
         this.firebaseFirestore = FirebaseFirestore.getInstance();
         this.rev = firebaseFirestore.collection("reviews");
+        this.authUtils = new AuthUtils(context);
+        this.userUtils = new UserUtils();
+        this.notificationUtils = new NotificationUtils(context);
+        this.timeUtils = new TimeUtils();
+        this.jobUtils = new JobUtils();
     }
 
     /* interfaces
@@ -41,13 +57,15 @@ public class ReviewUtils {
     * ==================================
     * */
 
-    public void addReview(Review review, final reviewAddedListener listener){
+    public void addReview(final Review review, final reviewAddedListener listener){
         rev.add(review)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
-                        if (task.isSuccessful())
+                        if (task.isSuccessful()) {
                             listener.isAdded(true, "Review added");
+                            sendNotification(review.getJob_id());
+                        }
                         else
                             listener.isAdded(false, "Your review couldn't be added try again");
                     }
@@ -83,6 +101,33 @@ public class ReviewUtils {
              public void onFailure(@NonNull Exception e) {
                  setReviews.reviews(null);
              }
+        });
+    }
+
+    public void sendNotification(final String job_id){
+        userUtils.getUserByUID(authUtils.getCurrentUser().getUid(), new UserUtils.foundUser() {
+            @Override
+            public void user(final User user) {
+                if (user != null) {
+                    final Notif notif = new Notif();
+                    notif.setType(0);
+                    notif.setTime(timeUtils.getCurrentTimeStamp());
+                    notif.setSender_uid(user.getUID());
+
+                    jobUtils.getJobById(job_id, new JobUtils.onJobFoundListener() {
+                        @Override
+                        public void foundJob(Job job) {
+                            if (job != null) {
+                                notif.setReceiver_uid(job.getOwner());
+                                notif.setText(notificationUtils.revNotification(job.getTitle(), user.getUser_name()));
+
+                                notificationUtils.sendNotification(notif);
+                            }
+                        }
+                    });
+
+                }
+            }
         });
     }
 

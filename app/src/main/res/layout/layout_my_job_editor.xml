@@ -31,7 +31,8 @@
                     android:textStyle="bold"
                     android:text="Job title"
                     android:textAlignment="center"
-                    android:textColor="@color/color_black"/>
+                    android:textColor="@color/color_black"
+                    android:id="@+id/job_title"/>
 
                 <View
                     android:layout_width="24dp"
@@ -80,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/placeholder_lorem"
-                    android:id="@+id/job_description"/>
+                    android:id="@+id/job_description" />
 
             </LinearLayout>
 
@@ -248,6 +249,7 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="8dp"
                             android:text="45 Applicants"
+                            android:id="@+id/app_count"
                             android:textColor="@color/color_lighter_dark"
                             android:textSize="12sp" />
 
@@ -333,37 +335,13 @@
                 android:orientation="vertical"
                 android:layout_marginTop="32dp">
 
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:orientation="horizontal">-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_weight="1"-->
-                        <!--android:textSize="15sp"-->
-                        <!--android:textStyle="bold"-->
-                        <!--android:text="@string/label_reviews"-->
-                        <!--android:layout_gravity="center_vertical"-->
-                        <!--android:textColor="@color/color_black"/>-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_weight="0"-->
-                        <!--android:layout_height="24dp"-->
-                        <!--android:layout_gravity="end|center_vertical"-->
-                        <!--android:text="3"-->
-                        <!--android:textAlignment="center"/>-->
-
-                <!--</LinearLayout>-->
 
                 <com.alespero.expandablecardview.ExpandableCardView
                     android:id="@+id/rev_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:title="Reviews"
-                    app:inner_view="@layout/layout_review_reply_item"
+                    app:inner_view="@layout/layout_normal_list"
                     app:icon="@drawable/vector_view"
                     app:expandOnClick="true"
                     app:animationDuration="300"
@@ -375,7 +353,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:title="Applications"
-                    app:inner_view="@layout/layout_review_list"
+                    app:inner_view="@layout/layout_content_application_list"
                     app:icon="@drawable/vector_view"
                     app:expandOnClick="true"
                     app:animationDuration="300"

@@ -11,7 +11,13 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.nassaty.hireme.listeners.updateListener;
 import com.nassaty.hireme.model.Job;
+import com.nassaty.hireme.model.Notif;
+import com.nassaty.hireme.model.User;
+import com.nassaty.hireme.utils.AuthUtils;
 import com.nassaty.hireme.utils.Constants;
+import com.nassaty.hireme.utils.NotificationUtils;
+import com.nassaty.hireme.utils.TimeUtils;
+import com.nassaty.hireme.utils.UserUtils;
 
 import java.util.Map;
 
@@ -19,13 +25,21 @@ public class NewJobModel{
 
     private Context context;
     private FirebaseFirestore firebaseFirestore;
+    private NotificationUtils notificationUtils;
+    private AuthUtils authUtils;
+    private UserUtils userUtils;
+    private TimeUtils timeUtils;
 
     public NewJobModel(Context context) {
         this.context = context;
         this.firebaseFirestore = FirebaseFirestore.getInstance();
+        this.notificationUtils = new NotificationUtils(context);
+        this.authUtils = new AuthUtils(context);
+        this.userUtils = new UserUtils();
+        this.timeUtils = new TimeUtils();
     }
 
-    public void insertJob(Job job){
+    public void insertJob(final Job job){
         DocumentReference documentReference = firebaseFirestore.collection(Constants.jobRef).document();
         String id = documentReference.getId();
         DocumentReference reference = firebaseFirestore.collection(Constants.jobRef).document(id);
@@ -35,6 +49,7 @@ public class NewJobModel{
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(context, "added successfully", Toast.LENGTH_SHORT).show();
+                        sendNotification(job.getTitle());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -43,6 +58,27 @@ public class NewJobModel{
                         Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    public void sendNotification(final String job_title){
+
+        userUtils.getUserByUID(authUtils.getCurrentUser().getUid(), new UserUtils.foundUser() {
+            @Override
+            public void user(User user) {
+                if (user != null){
+                    Notif notif = new Notif();
+                    notif.setType(1);
+                    notif.setSender_uid(user.getUID());
+                    notif.setReceiver_uid("");
+                    notif.setText(notificationUtils.jobNotification(job_title, user.getUser_name()));
+                    notif.setTime(timeUtils.getCurrentTimeStamp());
+
+                    notificationUtils.sendNotification(notif);
+                }
+            }
+        });
+
+
     }
 
     public void deleteJob(String id){
