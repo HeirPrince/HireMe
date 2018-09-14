@@ -2,6 +2,7 @@ package com.nassaty.hireme.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -30,13 +31,21 @@ public class Notifications extends AppCompatActivity {
 
         progressBar = findViewById(R.id.loading);
         notif_list = findViewById(R.id.notif_list);
-        notif_list.setLayoutManager(new LinearLayoutManager(this));
-        notif_list.setHasFixedSize(true);
 
         populate();
     }
 
     private void populate() {
+        //set up list
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        notif_list.setLayoutManager(new LinearLayoutManager(this));
+        notif_list.setHasFixedSize(true);
+
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(notif_list.getContext(), layoutManager.getOrientation());
+
+        notif_list.addItemDecoration(itemDecoration);
+
         progressBar.setVisibility(View.VISIBLE);
 
         notificationUtils.loadNotifications(new NotificationUtils.getNotificationList() {

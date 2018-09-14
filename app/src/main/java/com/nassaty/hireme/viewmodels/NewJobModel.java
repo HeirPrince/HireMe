@@ -49,7 +49,7 @@ public class NewJobModel{
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(context, "added successfully", Toast.LENGTH_SHORT).show();
-                        sendNotification(job.getTitle());
+                        sendNotification(job.getTitle(), job.getId());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -60,7 +60,7 @@ public class NewJobModel{
                 });
     }
 
-    public void sendNotification(final String job_title){
+    public void sendNotification(final String job_title, final String id){
 
         userUtils.getUserByUID(authUtils.getCurrentUser().getUid(), new UserUtils.foundUser() {
             @Override
@@ -72,6 +72,7 @@ public class NewJobModel{
                     notif.setReceiver_uid("");
                     notif.setText(notificationUtils.jobNotification(job_title, user.getUser_name()));
                     notif.setTime(timeUtils.getCurrentTimeStamp());
+                    notif.setContent_id(id);
 
                     notificationUtils.sendNotification(notif);
                 }

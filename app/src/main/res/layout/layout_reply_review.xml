@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:padding="12dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/user_part">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/job_search"
+            android:id="@+id/user_image2"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="username"
+            android:id="@+id/user_name"
+            android:textSize="16sp"
+            android:layout_marginStart="12dp"
+            android:layout_toEndOf="@+id/user_image2"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1 day ago"
+            android:id="@+id/time2"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_marginStart="62dp"
+        android:hint="Add a Reply"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_part"
+        android:background="@drawable/selector_edittext"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/reply_input"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+        android:drawableLeft="@drawable/vector_reply"
+        android:text="Reply"
+        android:layout_below="@+id/reply_input"
+        android:drawablePadding="12dp"
+        android:id="@+id/reply_btn"
+        android:contentDescription="Reply review"/>
+
+</RelativeLayout>

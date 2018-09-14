@@ -59,7 +59,7 @@ public class NewApplicationVModel extends AndroidViewModel {
                     public void onComplete(@NonNull Task<DocumentReference> task) {
                         if (task.isSuccessful()) {
                             addedListener1.applicationAdded(true);
-                            sendNotification(application.getJob_id());
+                            sendNotification(application.getJob_id(), application.getId());
                         }
                     }
                 })
@@ -71,7 +71,7 @@ public class NewApplicationVModel extends AndroidViewModel {
                 });
     }
 
-    public void sendNotification(final String jobId){
+    public void sendNotification(final String jobId, final String appId){
         userUtils.getUserByUID(authUtils.getCurrentUser().getUid(), new UserUtils.foundUser() {
             @Override
             public void user(final User user) {
@@ -80,6 +80,7 @@ public class NewApplicationVModel extends AndroidViewModel {
                     notif.setType(2);
                     notif.setTime(timeUtils.getCurrentTimeStamp());
                     notif.setSender_uid(user.getUID());
+                    notif.setContent_id(appId);
                     jobUtils.getJobById(jobId, new JobUtils.onJobFoundListener() {
                         @Override
                         public void foundJob(Job job) {

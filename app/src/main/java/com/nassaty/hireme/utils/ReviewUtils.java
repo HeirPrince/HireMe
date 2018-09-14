@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -53,18 +54,22 @@ public class ReviewUtils {
         void isAdded(Boolean isAdded, String message);
     }
 
+    public interface reviewReplied{
+        void isReplied(Boolean reply);
+    }
+
     /*  methods
     * ==================================
     * */
 
     public void addReview(final Review review, final reviewAddedListener listener){
         rev.add(review)
-                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
-                        if (task.isSuccessful()) {
+                    public void onSuccess(DocumentReference documentReference) {
+                        if (documentReference != null) {
                             listener.isAdded(true, "Review added");
-                            sendNotification(review.getJob_id());
+                            sendNotification(review.getJob_id(), documentReference.getId());
                         }
                         else
                             listener.isAdded(false, "Your review couldn't be added try again");
@@ -104,7 +109,7 @@ public class ReviewUtils {
         });
     }
 
-    public void sendNotification(final String job_id){
+    public void sendNotification(final String job_id, final String rev_id){
         userUtils.getUserByUID(authUtils.getCurrentUser().getUid(), new UserUtils.foundUser() {
             @Override
             public void user(final User user) {
@@ -131,7 +136,24 @@ public class ReviewUtils {
         });
     }
 
-    public void ReplyReview(String ref){
-        //employee replies a review
+    // FIXME: 9/13/2018 search for update codes
+    public void ReplyReview(String ref, String text, final reviewReplied replied){
+//        Map<String, String> reply = new HashMap<>();
+//        reply.put("reply", text);
+//
+//        rev.document(ref)
+//                .update(reply)
+//                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        replied.isReplied(true);
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        replied.isReplied(false);
+//                    }
+//                })
     }
 }

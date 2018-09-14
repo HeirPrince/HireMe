@@ -50,6 +50,7 @@
     <string name="application_applicants">Applicants</string>
     <string name="label_description">Description</string>
     <string name="label_reviews">Reviews</string>
+    <string name="application_delete">Delete</string>
 
 
 </resources>

@@ -1,54 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="150dp"
+    xmlns:folding-cell="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
 
-    <TextView
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:elevation="2dp"
+        android:src="@drawable/job_search"
+        android:layout_marginTop="14dp"
+        android:layout_marginStart="14dp"
+        android:id="@+id/user_image"/>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/notification_content"
-        android:textSize="20sp"
-        android:textColor="@color/colorAccent"
-        android:text="Prince added a review to your job"/>
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/notification_content">
-
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:textColor="@color/color_lighter_dark"
+            android:text="Jessy Menon"
+            android:textStyle="bold"
+            android:id="@+id/username"
+            android:layout_alignParentStart="true"/>
 
-            <View
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:backgroundTint="@color/colorAccent"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/vector_time"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="10:30 PM"
+            android:id="@+id/time"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="11:05 PM"
-                android:id="@+id/time"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="4dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jessy Menon Applied for Beautician"
+            android:layout_below="@+id/username"
+            android:layout_marginTop="10dp"
+            android:id="@+id/content"
+            android:layout_alignParentStart="true"/>
 
-        </LinearLayout>
+        <include layout="@layout/layout_notif_app_btn"/>
 
-     </LinearLayout>
+    </RelativeLayout>
 
-    <View
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:backgroundTint="@color/colorAccent"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
-        android:id="@+id/view_application"
-        android:background="@drawable/vector_view" />
 
-</RelativeLayout>
+</LinearLayout>

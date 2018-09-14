@@ -11,16 +11,18 @@ public class Notif {
     public String time;
     private String sender_uid;
     private String receiver_uid;
+    private String content_id;
 
     public Notif() {
     }
 
-    public Notif(int type, String text, String time, String sender_uid, String receiver_uid) {
+    public Notif(int type, String text, String time, String sender_uid, String receiver_uid, String content_id) {
         this.type = type;
         this.text = text;
         this.time = time;
         this.sender_uid = sender_uid;
         this.receiver_uid = receiver_uid;
+        this.content_id = content_id;
     }
 
     public int getType() {
@@ -61,5 +63,13 @@ public class Notif {
 
     public void setReceiver_uid(String receiver_uid) {
         this.receiver_uid = receiver_uid;
+    }
+
+    public String getContent_id() {
+        return content_id;
+    }
+
+    public void setContent_id(String content_id) {
+        this.content_id = content_id;
     }
 }

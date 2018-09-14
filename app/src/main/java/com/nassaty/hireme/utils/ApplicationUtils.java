@@ -81,5 +81,26 @@ public class ApplicationUtils {
 				});
 	}
 
+	public interface jobDone{
+		void onJobDone(Boolean done);
+	}
+
+	public void deleteApplication(String ref, final jobDone jobDone){
+		firebaseFirestore.collection(Constants.applicationRef).document(ref)
+				.delete()
+				.addOnCompleteListener(new OnCompleteListener<Void>() {
+					@Override
+					public void onComplete(@NonNull Task<Void> task) {
+						jobDone.onJobDone(true);
+					}
+				})
+				.addOnFailureListener(new OnFailureListener() {
+			        @Override
+			        public void onFailure(@NonNull Exception e) {
+			        	jobDone.onJobDone(false);
+			        }
+		});
+	}
+
 
 }

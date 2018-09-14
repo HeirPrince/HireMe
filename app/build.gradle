@@ -85,10 +85,6 @@ dependencies {
     //Day view
     implementation 'com.github.migellal:dayview:0.0.1'
 
-    //Material dialogs
-    implementation 'com.afollestad.material-dialogs:core:2.0.0-alpha07'
-    implementation 'com.afollestad.material-dialogs:input:2.0.0-alpha06'
-
     //Push down btn animation
     implementation('com.github.thekhaeng:pushdown-anim-click:1.1.1') {
         exclude group: 'com.android.support'
@@ -96,6 +92,9 @@ dependencies {
 
     //Expandable cardview
     implementation 'com.alespero:expandable-cardview:0.8'
+
+    //Ramoticon folding cell
+    implementation 'com.ramotion.foldingcell:folding-cell:1.2.2'
 
 }
 apply plugin: 'com.google.gms.google-services'
