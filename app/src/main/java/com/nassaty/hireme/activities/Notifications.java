@@ -16,6 +16,7 @@ import com.nassaty.hireme.utils.NotificationUtils;
 
 import java.util.List;
 
+// FIXME: 9/18/2018 I need to migrate to live data
 public class Notifications extends AppCompatActivity {
 
     RecyclerView notif_list;
@@ -45,16 +46,20 @@ public class Notifications extends AppCompatActivity {
         DividerItemDecoration itemDecoration = new DividerItemDecoration(notif_list.getContext(), layoutManager.getOrientation());
 
         notif_list.addItemDecoration(itemDecoration);
-
         progressBar.setVisibility(View.VISIBLE);
 
         notificationUtils.loadNotifications(new NotificationUtils.getNotificationList() {
             @Override
-            public void notifications(List<Notif> notifs) {
+            public void notifications(final List<Notif> notifs) {
                 if (notifs != null) {
-                    adapter = new NotifAdapter(notifs, Notifications.this, Notifications.this);
-                    notif_list.setAdapter(adapter);
-                    progressBar.setVisibility(View.GONE);
+                    notificationUtils.setListAsRead(notifs, new NotificationUtils.onJobdone() {
+                        @Override
+                        public void done(Boolean isDone) {
+                            adapter = new NotifAdapter(notifs, Notifications.this, Notifications.this);
+                            notif_list.setAdapter(adapter);
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    });
                 }else
                     Toast.makeText(Notifications.this, "no notifs found", Toast.LENGTH_SHORT).show();
             }

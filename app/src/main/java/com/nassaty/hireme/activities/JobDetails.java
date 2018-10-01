@@ -56,7 +56,7 @@ public class JobDetails extends AppCompatActivity {
         setContentView(R.layout.activity_job_details);
         authUtils = new AuthUtils(this);
         firebaseStorage = FirebaseStorage.getInstance();
-        applicationUtils = new ApplicationUtils();
+        applicationUtils = new ApplicationUtils(this);
         reviewUtils = new ReviewUtils(this);
 
         userVModel = new UserVModel();

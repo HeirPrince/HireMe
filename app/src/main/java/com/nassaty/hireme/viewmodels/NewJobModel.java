@@ -73,6 +73,7 @@ public class NewJobModel{
                     notif.setText(notificationUtils.jobNotification(job_title, user.getUser_name()));
                     notif.setTime(timeUtils.getCurrentTimeStamp());
                     notif.setContent_id(id);
+                    notif.setRead(false);
 
                     notificationUtils.sendNotification(notif);
                 }

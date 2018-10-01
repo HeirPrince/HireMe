@@ -66,10 +66,18 @@ public class ReviewUtils {
         rev.add(review)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
+                    public void onSuccess(final DocumentReference documentReference) {
                         if (documentReference != null) {
                             listener.isAdded(true, "Review added");
-                            sendNotification(review.getJob_id(), documentReference.getId());
+                            jobUtils.getJobById(review.getJob_id(), new JobUtils.onJobFoundListener() {
+                                @Override
+                                public void foundJob(Job job) {
+                                    if (job != null){
+                                        sendNotification(review.getJob_id(), documentReference.getId());
+                                    }
+                                }
+                            });
+
                         }
                         else
                             listener.isAdded(false, "Your review couldn't be added try again");
@@ -118,6 +126,8 @@ public class ReviewUtils {
                     notif.setType(0);
                     notif.setTime(timeUtils.getCurrentTimeStamp());
                     notif.setSender_uid(user.getUID());
+                    notif.setContent_id(rev_id);
+                    notif.setRead(false);
 
                     jobUtils.getJobById(job_id, new JobUtils.onJobFoundListener() {
                         @Override

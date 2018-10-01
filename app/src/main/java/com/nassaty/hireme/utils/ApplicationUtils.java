@@ -1,8 +1,12 @@
 package com.nassaty.hireme.utils;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -14,11 +18,15 @@ import java.util.List;
 
 public class ApplicationUtils {
 
+	Context context;
 	FirebaseFirestore firebaseFirestore;
+	NotificationUtils notificationUtils;
 	onAppFoundListener onAppFoundListener;
 
-	public ApplicationUtils() {
-		firebaseFirestore = FirebaseFirestore.getInstance();
+	public ApplicationUtils(Context context) {
+		this.context = context;
+		this.firebaseFirestore = FirebaseFirestore.getInstance();
+		this.notificationUtils = new NotificationUtils(context);
 	}
 
 	public interface onAppFoundListener{
@@ -85,21 +93,25 @@ public class ApplicationUtils {
 		void onJobDone(Boolean done);
 	}
 
-	public void deleteApplication(String ref, final jobDone jobDone){
-		firebaseFirestore.collection(Constants.applicationRef).document(ref)
-				.delete()
-				.addOnCompleteListener(new OnCompleteListener<Void>() {
-					@Override
-					public void onComplete(@NonNull Task<Void> task) {
-						jobDone.onJobDone(true);
-					}
-				})
-				.addOnFailureListener(new OnFailureListener() {
-			        @Override
-			        public void onFailure(@NonNull Exception e) {
-			        	jobDone.onJobDone(false);
-			        }
-		});
+	public void deleteApplication(final String notif_id, final jobDone jobDone){
+		if (!notif_id.equals("")){
+			firebaseFirestore.collection(Constants.applicationRef).document(notif_id)
+					.delete()
+					.addOnSuccessListener(new OnSuccessListener<Void>() {
+						@Override
+						public void onSuccess(Void aVoid) {
+							jobDone.onJobDone(true);
+						}
+					})
+					.addOnFailureListener(new OnFailureListener() {
+						@Override
+						public void onFailure(@NonNull Exception e) {
+							jobDone.onJobDone(false);
+						}
+					});
+		}else {
+			Toast.makeText(context, "reference returns null", Toast.LENGTH_SHORT).show();
+		}
 	}
 
 

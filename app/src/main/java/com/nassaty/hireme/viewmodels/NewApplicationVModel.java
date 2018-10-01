@@ -2,6 +2,7 @@ package com.nassaty.hireme.viewmodels;
 
 import android.arch.lifecycle.AndroidViewModel;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -20,8 +21,6 @@ import com.nassaty.hireme.utils.JobUtils;
 import com.nassaty.hireme.utils.NotificationUtils;
 import com.nassaty.hireme.utils.TimeUtils;
 import com.nassaty.hireme.utils.UserUtils;
-
-import java.util.UUID;
 
 public class NewApplicationVModel extends AndroidViewModel {
 
@@ -45,30 +44,43 @@ public class NewApplicationVModel extends AndroidViewModel {
     }
 
     public void sendApplication(String ref_id, final applicationAddedListener addedListener1) {
+
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
         final Application application = new Application();
         application.setJob_id(ref_id);
-        application.setId(UUID.randomUUID().toString());
         application.setStatusCode(1);
         application.setSender(authUtils.getCurrentUser().getUid());
 
-        FirebaseFirestore.getInstance()
-                .collection(Constants.applicationRef)
-                .add(application)
-                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
-                        if (task.isSuccessful()) {
-                            addedListener1.applicationAdded(true);
-                            sendNotification(application.getJob_id(), application.getId());
+        DocumentReference idRef = firebaseFirestore.collection(Constants.applicationRef).document();
+
+        String id = idRef.getId();
+
+        DocumentReference appRef = firebaseFirestore.collection(Constants.applicationRef).document(id);
+
+        application.setId(id);
+
+        if (!application.getId().equals("")){
+            appRef
+                    .set(application)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                addedListener1.applicationAdded(true);
+                                Toast.makeText(getApplication(), application.getId(), Toast.LENGTH_SHORT).show();
+                                sendNotification(application.getJob_id(), application.getId());
+                            }
                         }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        addedListener1.applicationAdded(false);
-                    }
-                });
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    addedListener1.applicationAdded(false);
+                }
+            });
+        }else {
+            Toast.makeText(getApplication(), "Application id failure", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void sendNotification(final String jobId, final String appId){
@@ -81,6 +93,7 @@ public class NewApplicationVModel extends AndroidViewModel {
                     notif.setTime(timeUtils.getCurrentTimeStamp());
                     notif.setSender_uid(user.getUID());
                     notif.setContent_id(appId);
+                    notif.setRead(false);
                     jobUtils.getJobById(jobId, new JobUtils.onJobFoundListener() {
                         @Override
                         public void foundJob(Job job) {

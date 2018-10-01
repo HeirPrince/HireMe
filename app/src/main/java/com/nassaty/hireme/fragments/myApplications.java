@@ -54,7 +54,7 @@ public class myApplications extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_applications, container, false);
         authUtils = new AuthUtils(getContext());
-        applicationUtils = new ApplicationUtils();
+        applicationUtils = new ApplicationUtils(getContext());
         jobUtils = new JobUtils();
 
         applications = new ArrayList<>();

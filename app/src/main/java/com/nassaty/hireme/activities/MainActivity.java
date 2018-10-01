@@ -13,25 +13,30 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.nassaty.hireme.R;
 import com.nassaty.hireme.fragments.Discover;
 import com.nassaty.hireme.fragments.Mine;
 import com.nassaty.hireme.fragments.Nearby;
+import com.nassaty.hireme.listeners.NotificationAddedCallBack;
 import com.nassaty.hireme.listeners.ProfileListener;
 import com.nassaty.hireme.utils.AuthUtils;
+import com.nassaty.hireme.utils.DrawableConverter;
 import com.nassaty.hireme.utils.NonSwipableViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnLongClickListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnLongClickListener, View.OnClickListener, NotificationAddedCallBack, OnMapReadyCallback {
 
     private AuthUtils authUtils;
     FloatingActionButton addNew;
     BottomNavigationViewEx bottomNav;
     NonSwipableViewPager viewPager;
     private Toolbar toolbar;
+    private static int notification_count = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +116,10 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_notify);
+        menuItem.setIcon(DrawableConverter.convertLayoutToImage(MainActivity.this, notification_count, R.drawable.vector_notify));
+
         return true;
     }
 
@@ -120,9 +129,30 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         switch (item.getItemId()){
             case R.id.action_notify:
                 startActivity(new Intent(MainActivity.this, Notifications.class));
+                notification_count = 0;
+                invalidateOptionsMenu();
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onAdded() {
+        notification_count++;
+        invalidateOptionsMenu();
+        Toast.makeText(this, "notif added", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRemoved() {
+        notification_count--;
+        invalidateOptionsMenu();
+        Toast.makeText(this, "notif removed", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
     }
 
     class SlideAdapter extends FragmentStatePagerAdapter {
@@ -135,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 
         @Override
         public Fragment getItem(int position) {
-            return fragments.get(position);
+                return fragments.get(position);
         }
 
         @Override

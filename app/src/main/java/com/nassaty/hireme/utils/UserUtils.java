@@ -30,8 +30,12 @@ public class UserUtils {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         for (QueryDocumentSnapshot snapshot : task.getResult()){
-                            User user = snapshot.toObject(User.class);
-                            foundUser.user(user);
+                            if (snapshot.exists()){
+                                User user = snapshot.toObject(User.class);
+                                foundUser.user(user);
+                            }else {
+                                foundUser.user(null);
+                            }
                         }
                     }
                 })

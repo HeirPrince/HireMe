@@ -17,6 +17,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.nassaty.hireme.R;
 import com.nassaty.hireme.activities.JobDetails;
+import com.nassaty.hireme.activities.MainActivity;
+import com.nassaty.hireme.listeners.NotificationAddedCallBack;
 import com.nassaty.hireme.listeners.applicationAddedListener;
 import com.nassaty.hireme.model.Job;
 import com.nassaty.hireme.model.User;
@@ -100,6 +102,9 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
             public void onClick(View view) {
 //                holder.triggerJobStatus(true);
                 holder.sendApplication(job.getId());
+                if (context instanceof MainActivity){
+                    ((NotificationAddedCallBack)context).onAdded();
+                }
             }
         });
     }

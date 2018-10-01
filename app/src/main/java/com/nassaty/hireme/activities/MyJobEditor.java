@@ -45,7 +45,7 @@ public class MyJobEditor extends AppCompatActivity {
 
         jobUtils = new JobUtils();
         reviewUtils = new ReviewUtils(this);
-        applicationUtils = new ApplicationUtils();
+        applicationUtils = new ApplicationUtils(this);
 
         populate(job_ref);
     }

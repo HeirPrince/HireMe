@@ -45,8 +45,8 @@
                 android:layout_marginTop="8dp">
 
                 <View
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:background="@drawable/vector_applicants"
                     android:layout_gravity="center_vertical"/>
 
@@ -112,6 +112,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginTop="8dp"
                         android:text="prinheir9@gmail.com"
+                        android:id="@+id/user_email"
                         android:textColor="@color/color_lighter_dark" />
 
 
@@ -152,6 +153,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginTop="8dp"
                         android:text="+250782085695"
+                        android:id="@+id/user_phone"
                         android:textColor="@color/color_lighter_dark" />
 
 

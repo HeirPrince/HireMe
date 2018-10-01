@@ -51,6 +51,7 @@
     <string name="label_description">Description</string>
     <string name="label_reviews">Reviews</string>
     <string name="application_delete">Delete</string>
+    <string name="title_activity_nearby_map">Nearby Jobs</string>
 
 
 </resources>

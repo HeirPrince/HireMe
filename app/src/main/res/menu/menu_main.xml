@@ -19,5 +19,5 @@
         android:id="@+id/action_notify"
         android:orderInCategory="200"
         android:title=""
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>

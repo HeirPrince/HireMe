@@ -37,7 +37,7 @@ public class SmallAppAdapter extends RecyclerView.Adapter<SmallAppAdapter.AppVie
         this.applications = applications;
         this.context = context;
         this.jobUtils = new JobUtils();
-        this.applicationUtils = new ApplicationUtils();
+        this.applicationUtils = new ApplicationUtils(context);
         this.authUtils = new AuthUtils(context);
         this.userUtils = new UserUtils();
         this.storageUtils = new StorageUtils(context);

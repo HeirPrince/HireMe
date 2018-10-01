@@ -6,23 +6,35 @@ public class Notif {
     public static final int JOB_TYPE = 1;
     public static final int APPLICATION_TYPE = 2;
 
+    private String id;
     public int type;
     public String text;
     public String time;
     private String sender_uid;
     private String receiver_uid;
     private String content_id;
+    private Boolean isRead;
 
     public Notif() {
     }
 
-    public Notif(int type, String text, String time, String sender_uid, String receiver_uid, String content_id) {
+    public Notif(String id, int type, String text, String time, String sender_uid, String receiver_uid, String content_id, Boolean isRead) {
+        this.id = id;
         this.type = type;
         this.text = text;
         this.time = time;
         this.sender_uid = sender_uid;
         this.receiver_uid = receiver_uid;
         this.content_id = content_id;
+        this.isRead = isRead;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getType() {
@@ -71,5 +83,13 @@ public class Notif {
 
     public void setContent_id(String content_id) {
         this.content_id = content_id;
+    }
+
+    public Boolean getRead() {
+        return isRead;
+    }
+
+    public void setRead(Boolean read) {
+        isRead = read;
     }
 }

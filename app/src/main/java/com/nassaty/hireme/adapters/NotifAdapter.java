@@ -15,10 +15,13 @@ import android.widget.Toast;
 
 import com.nassaty.hireme.R;
 import com.nassaty.hireme.activities.ApplicantDetails;
+import com.nassaty.hireme.activities.MainActivity;
+import com.nassaty.hireme.listeners.NotificationAddedCallBack;
 import com.nassaty.hireme.model.Notif;
 import com.nassaty.hireme.model.User;
 import com.nassaty.hireme.utils.ApplicationUtils;
 import com.nassaty.hireme.utils.AuthUtils;
+import com.nassaty.hireme.utils.NotificationUtils;
 import com.nassaty.hireme.utils.ReviewUtils;
 import com.nassaty.hireme.utils.StorageUtils;
 import com.nassaty.hireme.utils.UserUtils;
@@ -37,6 +40,7 @@ public class NotifAdapter extends RecyclerView.Adapter {
     private UserUtils userUtils;
     private StorageUtils storageUtils;
     private ApplicationUtils applicationUtils;
+    private NotificationUtils notificationUtils;
     private Context context;
     private Activity activity;
 
@@ -47,7 +51,8 @@ public class NotifAdapter extends RecyclerView.Adapter {
         this.reviewUtils = new ReviewUtils(context);
         this.userUtils = new UserUtils();
         this.storageUtils = new StorageUtils(context);
-        this.applicationUtils = new ApplicationUtils();
+        this.applicationUtils = new ApplicationUtils(context);
+        this.notificationUtils = new NotificationUtils(context);
         this.activity = activity;
     }
 
@@ -146,28 +151,50 @@ public class NotifAdapter extends RecyclerView.Adapter {
                             @Override
                             public void onClick(View v) {
                                 Intent i = new Intent(context, ApplicantDetails.class);
-                                i.putExtra("ref", notification.getContent_id());
+                                i.putExtra("receiver_uid", notification.getReceiver_uid());
+                                i.putExtra("sender_uid", notification.getSender_uid());
+                                i.putExtra("obj_ref", notification.getContent_id());
                                 context.startActivity(i);
                             }
                         });
 
-                        ((ApplicationTypeHolder)holder).delete.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                //delete application
-                                applicationUtils.deleteApplication(notification.getContent_id(), new ApplicationUtils.jobDone() {
-                                    @Override
-                                    public void onJobDone(Boolean done) {
-                                        if (done){
-                                            Toast.makeText(context, "application deleted", Toast.LENGTH_SHORT).show();
-                                            notifyDataSetChanged();
-                                        }else {
-                                            Toast.makeText(context, "application could not be deleted", Toast.LENGTH_SHORT).show();
+                        if (!notification.getId().equals("")){
+                            ((ApplicationTypeHolder)holder).delete.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //delete application
+
+
+                                    notificationUtils.deleteNotification(notification.getId(), new NotificationUtils.onNotifDeleted() {
+                                        @Override
+                                        public void deleted(Boolean isDeleted) {
+                                            if (isDeleted){
+                                                Toast.makeText(context, "yes is deleted", Toast.LENGTH_SHORT).show();
+                                                applicationUtils.deleteApplication(notification.getContent_id(), new ApplicationUtils.jobDone() {
+                                                    @Override
+                                                    public void onJobDone(Boolean done) {
+                                                        if (done) {
+                                                            Toast.makeText(context, "application deleted", Toast.LENGTH_SHORT).show();                                                   if (context instanceof MainActivity){
+                                                                ((NotificationAddedCallBack)context).onRemoved();
+                                                            }
+                                                            notifyDataSetChanged();
+                                                        } else {
+                                                            Toast.makeText(context, "application could not be deleted", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                            else
+                                                Toast.makeText(context, "no its still there", Toast.LENGTH_SHORT).show();
                                         }
-                                    }
-                                });
-                            }
-                        });
+                                    });
+
+                                    
+                                }
+                            });
+                        }else {
+                            Toast.makeText(context, "sth wrong", Toast.LENGTH_SHORT).show();
+                        }
 
                         //user part
                         userUtils.getUserByUID(notification.getSender_uid(), new UserUtils.foundUser() {
