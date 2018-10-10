@@ -9,43 +9,43 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.nassaty.hireme.R;
+import com.nassaty.hireme.activities.Apply;
 import com.nassaty.hireme.activities.JobDetails;
-import com.nassaty.hireme.activities.MainActivity;
-import com.nassaty.hireme.listeners.NotificationAddedCallBack;
-import com.nassaty.hireme.listeners.applicationAddedListener;
 import com.nassaty.hireme.model.Job;
 import com.nassaty.hireme.model.User;
-import com.nassaty.hireme.utils.AuthUtils;
-import com.nassaty.hireme.utils.Constants;
+import com.nassaty.hireme.room.NewFavVModel;
+import com.nassaty.hireme.utils.StorageUtils;
 import com.nassaty.hireme.viewmodels.NewApplicationVModel;
 import com.nassaty.hireme.viewmodels.UserVModel;
 import com.thekhaeng.pushdownanim.PushDownAnim;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
+public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> implements Filterable {
 
     private Context context;
-    private AuthUtils authUtils;
     private List<Job> jobs;
+    private List<Job> filteredJobs;
     private NewApplicationVModel applicationVModel;
     private UserVModel userVModel;
+    private NewFavVModel newFavVModel;
+    private StorageUtils storageUtils;
 
     public JobAdapter(Context ctx, List<Job> jobs) {
         this.context = ctx;
         this.jobs = jobs;
         this.applicationVModel = ViewModelProviders.of((FragmentActivity) context).get(NewApplicationVModel.class);
-        this.authUtils = new AuthUtils(context);
         this.userVModel = new UserVModel();
+        this.storageUtils = new StorageUtils(context);
+        this.newFavVModel = ViewModelProviders.of((FragmentActivity) context).get(NewFavVModel.class);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
             @Override
             public void user(User user) {
                 holder.owner_names.setText(user.getUser_name());
-                holder.loadImage(user.getImageTitle(), user.getUID());
+                storageUtils.downloadUserImage(context, holder.owner_image, user.getUID(), user.getImageTitle());
                 holder.location.setText("Kigali");// FIXME: 8/13/2018 set location
                 holder.date.setText("Aug, 13");// FIXME: 8/13/2018 set date plz nigga
             }
@@ -100,11 +100,16 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         holder.app.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                holder.triggerJobStatus(true);
-                holder.sendApplication(job.getId());
-                if (context instanceof MainActivity){
-                    ((NotificationAddedCallBack)context).onAdded();
-                }
+                Intent intent = new Intent(context, Apply.class);
+                intent.putExtra("ref_id", job.getId());
+                context.startActivity(intent);
+            }
+        });
+
+        holder.add2fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newFavVModel.addFavorites(job);
             }
         });
     }
@@ -123,8 +128,39 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         notifyDataSetChanged();
     }
 
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charString = constraint.toString();
+                if (charString.isEmpty()){
+                    filteredJobs = jobs;
+                }else {
+                    List<Job> filteredList = new ArrayList<>();
+                    for (Job job : filteredList){
+                        if (job.getTitle().toLowerCase().contains(charString.toLowerCase())){
+                              filteredList.add(job);
+                        }
+                    }
+                    filteredJobs = filteredList;
+                }
 
-    public class JobViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredJobs;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filteredJobs = (List<Job>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+
+    public class JobViewHolder extends RecyclerView.ViewHolder {
 
         private String ref;
         private Boolean isMine;
@@ -132,6 +168,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         private TextView job_title, owner_names, location, date;
         private CircleImageView owner_image;
         private Button app;
+        private View add2fav;
 
 
         public JobViewHolder(View itemView) {
@@ -152,6 +189,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
             owner_image = itemView.findViewById(R.id.owner_image);
             date = itemView.findViewById(R.id.date_time);
             app = itemView.findViewById(R.id.apply);
+            add2fav = itemView.findViewById(R.id.add2fav);
         }
 
 //        private void changeStatus(boolean sent, boolean accepted, boolean rejected) {
@@ -187,35 +225,6 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
             return ref;
         }
 
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.add_application:
-                    //add app
-                    break;
-            }
-        }
-
-        public void loadImage(String imageTitle, String uid) {
-            StorageReference ref = FirebaseStorage.getInstance().getReference().child(Constants.getImageFolder()).child(uid);
-
-            Glide.with(context)
-                    .load(ref.child(imageTitle))
-                    .into(owner_image);
-        }
-
-        private void sendApplication(String ref_id) {
-            applicationVModel.sendApplication(ref_id, new applicationAddedListener() {
-                @Override
-                public void applicationAdded(Boolean state) {
-                    if (state) {
-                        Toast.makeText(context, "application added successfully", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(context, "application not added or may have been cancelled", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
 
 //        public void setMine(Boolean mine) {
 //            if (mine){

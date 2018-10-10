@@ -263,5 +263,41 @@ public class jobListViewModel extends AndroidViewModel {
                 });
     }
 
+    
+    public void filter(final String q, final jobListListener listListener){
+        final List<Job> filteredJobs = new ArrayList<>();
+
+
+        FirebaseFirestore.getInstance()
+                .collection(Constants.jobRef)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
+                            if (doc != null) {
+                                Job job = doc.toObject(Job.class);
+
+                                String query = q.toLowerCase();
+                                String title = job.getTitle().toLowerCase();
+                                String owner = job.getTitle().toLowerCase();
+                                String description = job.getTitle().toLowerCase();
+
+                                if (title.contains(q) || owner.contains(q) || description.contains(q)) {
+                                    filteredJobs.add(job);
+                                    listListener.jobList(filteredJobs);
+                                }
+                            }
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+    }
+
 
 }

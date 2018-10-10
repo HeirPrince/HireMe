@@ -6,11 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".fragments.Discover">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/job_list"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/job_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progress"

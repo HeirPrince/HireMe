@@ -2,6 +2,7 @@ package com.nassaty.hireme.model;
 
 public class Notif {
 
+    public static final int EMPTY_VIEW = -1;
     public static final int REVIEW_TYPE = 0;
     public static final int JOB_TYPE = 1;
     public static final int APPLICATION_TYPE = 2;

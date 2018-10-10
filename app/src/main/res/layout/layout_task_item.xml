@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="House Cleaning"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:layout_centerVertical="true"
+        android:textColor="@color/color_lighter_dark"
+        android:id="@+id/title"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$100"
+            android:textColor="@color/colorAccent"
+            android:layout_marginEnd="32dp"
+            android:textSize="15sp"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/salary"/>
+
+        <View
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:backgroundTint="@color/colorAccent"
+            android:background="@drawable/vector_close"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/delete"/>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

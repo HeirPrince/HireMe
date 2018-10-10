@@ -10,14 +10,15 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_profile"
-        android:orderInCategory="200"
-        android:title="@string/profile_title"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/action_notify"
         android:orderInCategory="200"
         android:title=""
-        app:showAsAction="ifRoom" />
+        android:icon="@drawable/vector_notify"
+        app:showAsAction="always" />
+
+    <item android:id="@+id/search"
+        android:title=""
+        android:icon="@drawable/vector_search"
+        android:iconTint="@color/colorAccent"
+        app:showAsAction="collapseActionView|always" />
 </menu>

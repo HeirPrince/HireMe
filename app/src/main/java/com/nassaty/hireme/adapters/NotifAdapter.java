@@ -80,12 +80,15 @@ public class NotifAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         switch (notifs.get(position).type){
+            case -1:
+                return Notif.EMPTY_VIEW;
             case 0:
                 return Notif.REVIEW_TYPE;
             case 1:
                 return Notif.JOB_TYPE;
             case 2:
                 return Notif.APPLICATION_TYPE;
+
             default:
                 return -1;
 

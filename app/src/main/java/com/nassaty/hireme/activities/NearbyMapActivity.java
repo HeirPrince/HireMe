@@ -10,11 +10,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
@@ -28,14 +27,26 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.FirebaseDatabase;
 import com.nassaty.hireme.R;
+import com.nassaty.hireme.model.Loc;
+import com.nassaty.hireme.model.User;
+import com.nassaty.hireme.utils.AuthUtils;
+import com.nassaty.hireme.utils.GeoLocator;
 import com.nassaty.hireme.utils.PermissionUtils;
+import com.nassaty.hireme.utils.UserUtils;
 
-public class NearbyMapActivity extends FragmentActivity implements OnMapReadyCallback {
+import java.util.List;
+
+// FIXME: 10/3/2018 I NEED CONFIRMATION
+public class NearbyMapActivity extends FragmentActivity {
 
 	private GoogleMap mMap;
 	private FusedLocationProviderClient mFusedLocationClient;
-	private LocationCallback mLocationCallback;
+	private GeoLocator geoLocator;
+	private UserUtils userUtils;
+	private AuthUtils authUtils;
+	private FirebaseDatabase firebaseDatabase;
 
 	Boolean mRequestingLocationUpdates;
 	int MY_PERMISSIONS_REQUEST_LOCATION = 1000;
@@ -43,14 +54,6 @@ public class NearbyMapActivity extends FragmentActivity implements OnMapReadyCal
 
 	private PermissionUtils permissionUtils;
 	private LocationRequest mLocationRequest;
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		outState.putBoolean("updates",
-				mRequestingLocationUpdates);
-		// ...
-		super.onSaveInstanceState(outState);
-	}
 
 
 	@Override
@@ -60,40 +63,29 @@ public class NearbyMapActivity extends FragmentActivity implements OnMapReadyCal
 		mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 		mLocationRequest = new LocationRequest();
 		mRequestingLocationUpdates = false;
-		updateValuesFromBundle(savedInstanceState);
+		permissionUtils = new PermissionUtils(this);
 
+		firebaseDatabase = FirebaseDatabase.getInstance();
+		geoLocator = new GeoLocator(this, firebaseDatabase);
+		authUtils = new AuthUtils(this);
+		userUtils = new UserUtils();
 
-		mLocationCallback = new LocationCallback() {
+		geoLocator.getLocation("Prince", new GeoLocator.userLocation() {
 			@Override
-			public void onLocationResult(LocationResult locationResult) {
-				if (locationResult == null) {
-					return;
-				}
-				for (Location location : locationResult.getLocations()) {
-					// Update UI with location data
-					// ...
-					updateUI();
+			public void foundLocation(String key, final GeoLocation location) {
+				if (location!= null){
+					Toast.makeText(NearbyMapActivity.this, key+" is located at : "+"Latitude : "+location.latitude+" Longitude : "+location.longitude, Toast.LENGTH_SHORT).show();
+
+
+
+				}else {
+					Toast.makeText(NearbyMapActivity.this, "location not found", Toast.LENGTH_SHORT).show();
 				}
 			}
-		};
+		});
 
-	}
-
-	private void updateValuesFromBundle(Bundle savedInstanceState) {
-		if (savedInstanceState == null) {
-			return;
-		}
-
-		// Update the value of mRequestingLocationUpdates from the Bundle.
-		if (savedInstanceState.keySet().contains(200)) {
-			mRequestingLocationUpdates = savedInstanceState.getBoolean(
-					"updates");
-		}
-
-		// ...
-
-		// Update UI to match restored state
 		updateUI();
+
 	}
 
 	private void updateUI() {
@@ -161,20 +153,28 @@ public class NearbyMapActivity extends FragmentActivity implements OnMapReadyCal
 														Manifest.permission.ACCESS_COARSE_LOCATION
 												},
 										MY_PERMISSIONS_REQUEST_LOCATION);
-
-								return;
 							} else {
-								googleMap.clear();
 								mFusedLocationClient.getLastLocation()
 										.addOnSuccessListener(NearbyMapActivity.this, new OnSuccessListener<Location>() {
 											@Override
-											public void onSuccess(Location location) {
+											public void onSuccess(final Location location) {
 												// Got last known location. In some rare situations this can be null.
 												if (location != null) {
-													// Logic to handle location object
-													LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
-													googleMap.addMarker(new MarkerOptions().position(myLocation).title("My location")); //You: Prince Heir
-													googleMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
+
+													userUtils.getUserByUID(authUtils.getCurrentUser().getUid(), new UserUtils.foundUser() {
+														@Override
+														public void user(User user) {
+															if (user != null){
+																displayLocations(googleMap);
+																// Logic to handle location object
+																LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+																googleMap.addMarker(new MarkerOptions().position(myLocation).title(user.getUser_name()));
+																googleMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
+
+																geoLocator.addGeoLocation(user.getUser_name(), location);
+															}
+														}
+													});
 												}
 											}
 										});
@@ -208,22 +208,35 @@ public class NearbyMapActivity extends FragmentActivity implements OnMapReadyCal
 		});
 	}
 
-
-	/**
-	 * Manipulates the map once available.
-	 * This callback is triggered when the map is ready to be used.
-	 * This is where we can add markers or lines, add listeners or move the camera. In this case,
-	 * we just add a marker near Sydney, Australia.
-	 * If Google Play services is not installed on the device, the user will be prompted to install
-	 * it inside the SupportMapFragment. This method will only be triggered once the user has
-	 * installed Google Play services and returned to the app.
-	 */
-	@Override
-	public void onMapReady(final GoogleMap googleMap) {
-
-
-
+	public void displayLocations(final GoogleMap googleMap){
+		userUtils.getUserByUID(authUtils.getCurrentUser().getUid(), new UserUtils.foundUser() {
+			@Override
+			public void user(User user) {
+				geoLocator.getLocation(user.getUser_name(), new GeoLocator.userLocation() {
+					@Override
+					public void foundLocation(String key, final GeoLocation location) {
+						LatLng latLng = new LatLng(location.latitude, location.longitude);
+						geoLocator.queryLocAt(40.6, latLng, new GeoLocator.gottenLocations() {
+							@Override
+							public void locations(List<Loc> locs) {
+								googleMap.clear();
+								for (Loc loc : locs){
+									if (loc != null){
+										LatLng myLocation = loc.getLatLng();
+										googleMap.addMarker(new MarkerOptions().position(myLocation).title(loc.getKey()));
+										Toast.makeText(NearbyMapActivity.this, loc.getKey()+" is added"+locs.size(), Toast.LENGTH_SHORT).show();
+									}else {
+										Toast.makeText(NearbyMapActivity.this, "locations not found", Toast.LENGTH_SHORT).show();
+									}
+								}
+							}
+						});
+					}
+				});
+			}
+		});
 	}
+	
 
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -236,43 +249,5 @@ public class NearbyMapActivity extends FragmentActivity implements OnMapReadyCal
 				permissionUtils.isPermissionGranted(false);
 			}
 		}
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if (mRequestingLocationUpdates) {
-			startLocationUpdates();
-		}
-	}
-
-	private void startLocationUpdates() {
-		if (ActivityCompat.checkSelfPermission(this,
-				Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-				Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			// TODO: Consider calling
-			//    ActivityCompat#requestPermissions
-			// here to request the missing permissions, and then overriding
-			//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-			//                                          int[] grantResults)
-			// to handle the case where the user grants the permission. See the documentation
-			// for ActivityCompat#requestPermissions for more details.
-			return;
-		}else {
-			mFusedLocationClient.requestLocationUpdates(mLocationRequest,
-					mLocationCallback,
-					null /* Looper */);
-		}
-
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		stopLocationUpdates();
-	}
-
-	private void stopLocationUpdates() {
-		mFusedLocationClient.removeLocationUpdates(mLocationCallback);
 	}
 }

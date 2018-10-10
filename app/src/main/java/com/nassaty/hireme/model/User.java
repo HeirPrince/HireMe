@@ -1,5 +1,7 @@
 package com.nassaty.hireme.model;
 
+import java.util.List;
+
 public class User {
 
     private String user_name;
@@ -7,6 +9,7 @@ public class User {
     private String email;
     private String UID;
     private String imageTitle;
+    private List<String> employees;
 
     public User() {
     }
@@ -49,5 +52,13 @@ public class User {
 
     public void setImageTitle(String imageTitle) {
         this.imageTitle = imageTitle;
+    }
+
+    public List<String> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<String> employees) {
+        this.employees = employees;
     }
 }

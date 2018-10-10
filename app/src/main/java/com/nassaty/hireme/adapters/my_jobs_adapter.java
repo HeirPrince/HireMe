@@ -40,15 +40,23 @@ public class my_jobs_adapter extends RecyclerView.Adapter<my_jobs_adapter.JobVie
         final Job job = jobs.get(position);
 
         holder.textTitle.setText(job.getTitle());
+        //TODO add location and time
 
         holder.itemView.setTag(job);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(context, MyJobEditor.class);
                 i.putExtra("ref_id", job.getId());
                 context.startActivity(i);
+            }
+        });
+
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeJob(position);
             }
         });
 
@@ -70,22 +78,19 @@ public class my_jobs_adapter extends RecyclerView.Adapter<my_jobs_adapter.JobVie
         notifyItemRangeChanged(pos, jobs.size());
     }
 
-    public class JobViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class JobViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView textTitle;
+        private TextView textTitle, textLocation, textTime;
+        private View delete, edit;
 
 
         public JobViewHolder(View itemView) {
             super(itemView);
             textTitle = itemView.findViewById(R.id.textTitle);
-        }
-
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.add_application:
-                    break;
-            }
+            textLocation = itemView.findViewById(R.id.location);
+            textTime = itemView.findViewById(R.id.date);
+            delete = itemView.findViewById(R.id.delete);
+            edit = itemView.findViewById(R.id.edit);
         }
 
 //        private void deleteJob() {

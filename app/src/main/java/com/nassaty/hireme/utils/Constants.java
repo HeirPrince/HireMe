@@ -3,6 +3,8 @@ package com.nassaty.hireme.utils;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Constants {
@@ -57,6 +59,21 @@ public class Constants {
 
     public String getRandomID() {
         return randomID;
+    }
+
+    public static List<String> getCats(){
+        List<String> list = new ArrayList<>();
+
+        list.add("Entertainment");
+        list.add("House Cleaning");
+        list.add("Outside catering");
+        list.add("Sales Manager");
+        list.add("Accountant");
+        list.add("Project Manager");
+        list.add("Software Engineer");
+        list.add("Programmer");
+
+        return list;
     }
 
     /*Pop menu with icons*

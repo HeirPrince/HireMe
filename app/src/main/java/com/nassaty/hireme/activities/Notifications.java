@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -12,6 +11,7 @@ import android.widget.Toast;
 import com.nassaty.hireme.R;
 import com.nassaty.hireme.adapters.NotifAdapter;
 import com.nassaty.hireme.model.Notif;
+import com.nassaty.hireme.utils.EmptyRecyclerView;
 import com.nassaty.hireme.utils.NotificationUtils;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 // FIXME: 9/18/2018 I need to migrate to live data
 public class Notifications extends AppCompatActivity {
 
-    RecyclerView notif_list;
+    EmptyRecyclerView notif_list;
     NotifAdapter adapter;
     NotificationUtils notificationUtils;
     ProgressBar progressBar;
@@ -33,10 +33,15 @@ public class Notifications extends AppCompatActivity {
         progressBar = findViewById(R.id.loading);
         notif_list = findViewById(R.id.notif_list);
 
+
         populate();
     }
 
     private void populate() {
+
+        final View emptyView = findViewById(R.id.plc_note);
+        final View loadingView = findViewById(R.id.notif_list);
+
         //set up list
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
@@ -57,12 +62,18 @@ public class Notifications extends AppCompatActivity {
                         public void done(Boolean isDone) {
                             adapter = new NotifAdapter(notifs, Notifications.this, Notifications.this);
                             notif_list.setAdapter(adapter);
-                            progressBar.setVisibility(View.GONE);
+//                            notif_list.setEmptyView(emptyView);
+                            notif_list.setLoadingView(loadingView);
                         }
                     });
-                }else
+                }else if (notifs == null){ // FIXME: 10/5/2018 ADD A PLACE HOLDER {@Link R.layout.layout_placeholder_notifications}
                     Toast.makeText(Notifications.this, "no notifs found", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(Notifications.this, "error", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
+
     }
 }

@@ -7,9 +7,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.nassaty.hireme.R;
 import com.nassaty.hireme.adapters.FavoritesAdapter;
 import com.nassaty.hireme.model.Job;
@@ -18,17 +18,20 @@ import com.nassaty.hireme.room.FavListViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Favorites extends AppCompatActivity implements View.OnLongClickListener{
+public class Favorites extends AppCompatActivity implements View.OnLongClickListener {
 
     private RecyclerView fav_list;
     private FavListViewModel favListViewModel;
     private FavoritesAdapter adapter;
-    private FirebaseFirestore firebaseFirestore;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Favorites");
 
         fav_list = findViewById(R.id.fav_list);
         adapter = new FavoritesAdapter(this, new ArrayList<Job>(), this);

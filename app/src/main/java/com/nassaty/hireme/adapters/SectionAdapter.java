@@ -1,7 +1,10 @@
 package com.nassaty.hireme.adapters;
 
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +17,7 @@ import android.widget.Toast;
 import com.nassaty.hireme.R;
 import com.nassaty.hireme.model.Section;
 import com.nassaty.hireme.utils.RecyclerViewType;
+import com.nassaty.hireme.viewmodels.SharedViewModel;
 
 import java.util.List;
 
@@ -22,11 +26,13 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionV
     private Context context;
     private List<Section> sections;
     private RecyclerViewType recyclerViewType;
+    SharedViewModel sharedViewModel;
 
-    public SectionAdapter(Context context, List<Section> sections, RecyclerViewType recyclerViewType) {
+    public SectionAdapter(Context context, List<Section> sections, RecyclerViewType recyclerViewType, SharedViewModel sharedViewModel) {
         this.context = context;
         this.sections = sections;
         this.recyclerViewType = recyclerViewType;
+        this.sharedViewModel = sharedViewModel;
     }
 
     @NonNull
@@ -37,7 +43,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SectionViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final SectionViewHolder holder, int position) {
         final Section section = sections.get(position);
 
         //populate
@@ -56,8 +62,15 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionV
                 break;
         }
 
-        JobAdapter adapter = new JobAdapter(context, section.getJobs());
+        final JobAdapter adapter = new JobAdapter(context, section.getJobs());
         holder.item_list.setAdapter(adapter);
+
+        sharedViewModel.getSelected().observe((LifecycleOwner) context, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                adapter.getFilter().filter(s);
+            }
+        });
 
         holder.show_all.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +86,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionV
     public int getItemCount() {
         return sections.size();
     }
+    
 
     class SectionViewHolder extends RecyclerView.ViewHolder{
 

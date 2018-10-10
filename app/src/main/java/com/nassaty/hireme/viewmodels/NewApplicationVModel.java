@@ -22,6 +22,8 @@ import com.nassaty.hireme.utils.NotificationUtils;
 import com.nassaty.hireme.utils.TimeUtils;
 import com.nassaty.hireme.utils.UserUtils;
 
+import java.util.List;
+
 public class NewApplicationVModel extends AndroidViewModel {
 
     CollectionReference appRef;
@@ -43,21 +45,31 @@ public class NewApplicationVModel extends AndroidViewModel {
         this.jobUtils = new JobUtils();
     }
 
-    public void sendApplication(String ref_id, final applicationAddedListener addedListener1) {
+    private int calcTotal(List<com.nassaty.hireme.model.Task> tasks) {
+        int totalPrice = 0;
+
+        for (int i = 0; i < tasks.size(); i++){
+            totalPrice += tasks.get(i).getSalary();
+        }
+
+        return totalPrice;
+    }
+
+    public void sendApplication(String ref_id, List<com.nassaty.hireme.model.Task> tasks, final applicationAddedListener addedListener1) {
 
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
         final Application application = new Application();
         application.setJob_id(ref_id);
         application.setStatusCode(1);
+        application.setTasks(tasks);
+        application.setSalary(calcTotal(tasks));
         application.setSender(authUtils.getCurrentUser().getUid());
 
         DocumentReference idRef = firebaseFirestore.collection(Constants.applicationRef).document();
 
         String id = idRef.getId();
-
         DocumentReference appRef = firebaseFirestore.collection(Constants.applicationRef).document(id);
-
         application.setId(id);
 
         if (!application.getId().equals("")){

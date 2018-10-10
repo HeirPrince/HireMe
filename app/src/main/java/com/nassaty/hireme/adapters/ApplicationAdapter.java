@@ -42,7 +42,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         final Application application = applications.get(position);
-        holder.app_id.setText(application.getJob_id());
+
 
         holder.accept.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,9 +97,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
 
         public ViewHolder(View itemView) {
             super(itemView);
-            app_id = itemView.findViewById(R.id.app_id);
-            accept = itemView.findViewById(R.id.accept);
-            reject = itemView.findViewById(R.id.reject);
+
         }
     }
 

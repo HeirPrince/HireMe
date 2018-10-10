@@ -114,5 +114,33 @@ public class ApplicationUtils {
 		}
 	}
 
+	public interface onTasksFound{
+		void task(List<com.nassaty.hireme.model.Task> tasks, int count);
+	}
+
+	public void getTasks(String ref, final onTasksFound onTasksFound){
+		firebaseFirestore.collection(Constants.applicationRef).document(ref).collection("requested")
+				.get()
+				.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+					@Override
+					public void onComplete(@NonNull Task<QuerySnapshot> task) {
+						for (QueryDocumentSnapshot snapshot : task.getResult()){
+							if (snapshot.exists()){
+								Application application = snapshot.toObject(Application.class);
+								onTasksFound.task(application.getTasks(), application.getTasks().size());
+							}
+							else {
+								Toast.makeText(context, "tasks not found", Toast.LENGTH_SHORT).show();
+							}
+						}
+					}
+				}).addOnFailureListener(new OnFailureListener() {
+			@Override
+			public void onFailure(@NonNull Exception e) {
+				Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+			}
+		});
+	}
+
 
 }

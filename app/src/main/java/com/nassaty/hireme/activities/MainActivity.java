@@ -1,5 +1,6 @@
 package com.nassaty.hireme.activities;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +26,7 @@ import com.nassaty.hireme.listeners.ProfileListener;
 import com.nassaty.hireme.utils.AuthUtils;
 import com.nassaty.hireme.utils.DrawableConverter;
 import com.nassaty.hireme.utils.NonSwipableViewPager;
+import com.nassaty.hireme.viewmodels.SharedViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     NonSwipableViewPager viewPager;
     private Toolbar toolbar;
     private static int notification_count = 1;
+    SharedViewModel sharedViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 
         toolbar = findViewById(R .id.toolbar);
         setSupportActionBar(toolbar);
+
+        sharedViewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
 
         bottomNav = findViewById(R.id.bnve);
         viewPager = findViewById(R.id.pager);
@@ -132,6 +137,13 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 notification_count = 0;
                 invalidateOptionsMenu();
                 break;
+            case R.id.action_add_favorites:
+                startActivity(new Intent(MainActivity.this, Favorites.class));
+                break;
+
+            case R.id.search:
+                startActivity(new Intent(MainActivity.this, SearchResultsActivity.class));
+                break;
         }
         return true;
     }
@@ -177,4 +189,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             fragments.add(fragment);
         }
     }
+
+
 }
