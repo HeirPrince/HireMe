@@ -60,8 +60,7 @@ public class Apply extends AppCompatActivity {
 		task_list.setAdapter(adapter);
 	}
 
-	public void applyJob(View view) {
-
+	public void hireApplicant(View view) {
 		String ref_id = getIntent().getStringExtra("ref_id");
 
 		applicationVModel.sendApplication(ref_id, tasks, new applicationAddedListener() {

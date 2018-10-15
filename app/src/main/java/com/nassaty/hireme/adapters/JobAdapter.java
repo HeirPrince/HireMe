@@ -114,7 +114,6 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> i
         });
     }
 
-    // FIXME: 8/23/2018 int java.util.List.size() error returned because list is empty
     @Override
     public int getItemCount() {
         if (jobs != null)

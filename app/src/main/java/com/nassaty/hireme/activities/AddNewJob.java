@@ -5,28 +5,24 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.nassaty.hireme.R;
 import com.nassaty.hireme.model.Job;
 import com.nassaty.hireme.utils.AuthUtils;
 import com.nassaty.hireme.viewmodels.NewJobModel;
-import com.shalan.mohamed.itemcounterview.IncDecView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AddNewJob extends AppCompatActivity {
 
-    private EditText jobTitle, jobDesc, jobSalary;
-    IncDecView itemCounter;
+    android.support.v7.widget.Toolbar toolbar;
+    private EditText jobTitle, jobDesc;
     private NewJobModel newJobModel;
     private AuthUtils authUtils;
-    Switch more_times;
     Spinner cats;
 
 
@@ -34,22 +30,19 @@ public class AddNewJob extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_job);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Post a Job");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         jobTitle = findViewById(R.id.jobTitle);
         jobDesc = findViewById(R.id.jobDescription);
-        jobSalary = findViewById(R.id.jobSalary);
-        more_times = findViewById(R.id.more_times);
         cats = findViewById(R.id.spinner_cat);
-        itemCounter = findViewById(R.id.itemCounter);
 
         setSpinnerCats();
-        triggerTimes();
-
-
-
 
         authUtils = new AuthUtils(this);
-        newJobModel = new NewJobModel(this);//TODO create its own viewmodel
+        newJobModel = new NewJobModel(this);
 
     }
 
@@ -69,33 +62,17 @@ public class AddNewJob extends AppCompatActivity {
         cats.setAdapter(cat_adapter);
     }
 
-    private void triggerTimes() {
-
-        more_times.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                    itemCounter.setVisibility(View.VISIBLE);
-                else
-                    itemCounter.setVisibility(View.GONE);
-            }
-        });
-
-    }
-
     public void addJob(View view) {
-        if (jobDesc.getText() == null && jobTitle.getText() == null){
+        if (jobDesc.getText() == null && jobTitle.getText() == null && cats.getSelectedItem() == null){
             Toast.makeText(this, "empty fields", Toast.LENGTH_SHORT).show();
         }else {
             Job job = new Job();
             job.setDescription(jobDesc.getText().toString());
-            job.setSalary(Integer.valueOf(jobSalary.getText().toString()));
             job.setTitle(jobTitle.getText().toString());
             job.setId("kk");
+            job.setCategory(cats.getSelectedItem().toString());
             job.setOwner(authUtils.getCurrentUser().getUid());
 
-
-//            newJobViewModel.addJob(new Job(jobTitle.getText().toString(), jobDesc.getText().toString(), Integer.valueOf(jobSalary.getText().toString())));
             newJobModel.insertJob(job);
             finish();
             startActivity(new Intent(AddNewJob.this, MainActivity.class));

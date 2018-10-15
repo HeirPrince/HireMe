@@ -1,60 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="100dp"
     android:layout_margin="4dp"
     android:padding="8dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_image"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:id="@+id/user_image"
-        android:layout_marginEnd="16dp"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="16dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_toEndOf="@+id/user_image">
+        android:layout_toEndOf="@+id/user_image"
+        android:orientation="vertical">
 
         <TextView
+            android:id="@+id/user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/developer_names"
-            android:id="@+id/user_name"
-            android:textSize="15sp"
-            android:textColor="@color/color_black"/>
+            android:textColor="@color/color_black"
+            android:textSize="15sp" />
 
         <TextView
+            android:id="@+id/user_skill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="IT Assistant"
-            android:id="@+id/user_skill"
-            android:textSize="12sp"/>
+            android:textSize="12sp" />
 
         <TextView
+            android:id="@+id/app_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="2 days ago"
-            android:id="@+id/app_time"
-            android:textSize="12sp"
             android:textColor="@color/colorPrimary"
-            android:layout_marginTop="8dp"/>
+            android:textSize="12sp" />
 
     </LinearLayout>
 
     <TextView
+        android:id="@+id/user_salary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:id="@+id/user_salary"
-        android:layout_centerVertical="true"
-        android:textSize="15sp"
+        android:layout_alignTop="@+id/user_image"
         android:text="2000 RWF"
-        android:textColor="@color/colorPrimary"/>
+        android:textColor="@color/colorPrimary"
+        android:textSize="15sp" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/accept"
+            style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:padding="0dp"
+            android:text="ACCEPT"
+            android:textAlignment="textEnd"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
 
 
 </RelativeLayout>

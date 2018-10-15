@@ -148,7 +148,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@color/colorPrimary"
                 android:onClick="hireApplicant"
-                android:text="ACCEPT AND PAY"
+                android:text="ACCEPT"
                 android:id="@+id/apply_btn"
                 android:textColor="@color/color_white" />
 

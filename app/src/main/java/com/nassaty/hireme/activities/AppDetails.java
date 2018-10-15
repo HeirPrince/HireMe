@@ -1,10 +1,13 @@
 package com.nassaty.hireme.activities;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +63,20 @@ public class AppDetails extends AppCompatActivity {
 
 
 	public void hireApplicant(View view) {
-		Toast.makeText(this, "applicant hired, remember to rate him at the end of the job", Toast.LENGTH_SHORT).show();
+		final Dialog confirmDialog = new Dialog(this);
+		confirmDialog.setContentView(R.layout.dialog_applicant_confirm);
+
+		final Button dialog_cancel = confirmDialog.findViewById(R.id.cancel);
+		Button dialog_viewList = confirmDialog.findViewById(R.id.view_list);
+
+		dialog_cancel.setOnClickListener(v1 -> confirmDialog.dismiss());
+
+		dialog_viewList.setOnClickListener(v12 -> {
+			confirmDialog.dismiss();
+			Intent intent = new Intent(this, Worker_list.class);
+			startActivity(intent);
+		});
+
+		confirmDialog.show();
 	}
 }

@@ -40,13 +40,23 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.AddNewJob" />
-        <activity android:name=".activities.Favorites" />
+        <activity android:name=".activities.AddNewJob">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nassaty.hireme.activities.MainActivity" />
+        </activity>
+        <activity android:name=".activities.Favorites">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nassaty.hireme.activities.MainActivity" />
+        </activity>
         <activity android:name=".activities.AppList" />
-        <activity android:name=".activities.Profile" />
         <activity android:name=".activities.EditJob" />
-        <activity android:name=".activities.Notifications" />
-        <activity android:name=".activities.JobDetails" />
+        <activity android:name=".activities.JobDetails">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nassaty.hireme.activities.MainActivity" />
+        </activity>
         <activity android:name=".activities.SetInfo" />
         <activity android:name=".activities.MyJobEditor" />
         <activity android:name=".intentActivities.replyReview" />
@@ -77,7 +87,17 @@
             android:label="@string/title_activity_nearby_map" />
         <activity android:name=".activities.Apply" />
         <activity android:name=".activities.AppDetails" />
-        <activity android:name=".activities.Worker_list"></activity>
+        <activity android:name=".activities.Worker_list">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nassaty.hireme.activities.MainActivity" />
+        </activity>
+        <activity android:name=".activities.Received">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nassaty.hireme.activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

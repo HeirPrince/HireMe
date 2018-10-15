@@ -66,9 +66,9 @@ public class NearbyMapActivity extends FragmentActivity {
 		permissionUtils = new PermissionUtils(this);
 
 		firebaseDatabase = FirebaseDatabase.getInstance();
-		geoLocator = new GeoLocator(this, firebaseDatabase);
+		geoLocator = new GeoLocator(this);
 		authUtils = new AuthUtils(this);
-		userUtils = new UserUtils();
+		userUtils = new UserUtils(this);
 
 		geoLocator.getLocation("Prince", new GeoLocator.userLocation() {
 			@Override
@@ -138,13 +138,6 @@ public class NearbyMapActivity extends FragmentActivity {
 									Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
 									ActivityCompat.checkSelfPermission(NearbyMapActivity.this,
 											Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-								// TODO: Consider calling
-								//    ActivityCompat#requestPermissions
-								// here to request the missing permissions, and then overriding
-								//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-								//                                          int[] grantResults)
-								// to handle the case where the user grants the permission. See the documentation
-								// for ActivityCompat#requestPermissions for more details.
 
 								ActivityCompat.requestPermissions(NearbyMapActivity.this,
 										new String[]
@@ -171,7 +164,7 @@ public class NearbyMapActivity extends FragmentActivity {
 																googleMap.addMarker(new MarkerOptions().position(myLocation).title(user.getUser_name()));
 																googleMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
 
-																geoLocator.addGeoLocation(user.getUser_name(), location);
+																geoLocator.addGeoLocation(user.getUID(), location);
 															}
 														}
 													});

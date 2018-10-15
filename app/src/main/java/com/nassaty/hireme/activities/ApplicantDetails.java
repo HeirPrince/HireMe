@@ -33,7 +33,7 @@ public class ApplicantDetails extends AppCompatActivity {
 		applicant_id = getIntent().getStringExtra("sender_uid");
 
 		//utils
-		userUtils = new UserUtils();
+		userUtils = new UserUtils(this);
 		storageUtils = new StorageUtils(this);
 
 		//fields

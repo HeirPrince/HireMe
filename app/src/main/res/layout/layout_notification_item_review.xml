@@ -1,99 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:folding-cell="http://schemas.android.com/apk/res-auto">
+    android:layout_height="60dp"
+    android:padding="6dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/job_search"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/user_image"
+        android:orientation="vertical">
 
-        <com.ramotion.foldingcell.FoldingCell
-            android:id="@+id/folding_cell"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clipChildren="true"
-            android:clipToPadding="true"
-            folding-cell:animationDuration="100"
-            folding-cell:backSideColor="@color/lighter_grey"
-            folding-cell:additionalFlipsCount="0"
-            folding-cell:cameraHeight="140">
+            android:text="Prince Heir"
+            android:textColor="@color/color_black"
+            android:textSize="15sp"/>
 
-            <FrameLayout
-                android:id="@+id/cell_content_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/lighter_grey"
-                android:visibility="gone">
-
-                <include layout="@layout/layout_reply_review"/>
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/cell_title_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:id="@+id/user_image1"
-                        android:src="@drawable/job_search"/>
-
-                    <TextView
-                        android:id="@+id/notification_content1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Prince added a Review"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="18sp"
-                        android:layout_toEndOf="@id/user_image1"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="24dp"/>
+        <TextView
+            android:id="@+id/notification_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Prince added a review to your job"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"/>
 
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/notification_content"
-                        android:orientation="horizontal"
-                        android:id="@+id/chrono">
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:orientation="horizontal">
 
-                        <View
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_gravity="center_vertical"
-                            android:background="@drawable/vector_time"
-                            android:backgroundTint="@color/colorAccent" />
+        <View
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/vector_time"
+            android:backgroundTint="@color/colorAccent"/>
 
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:text="11:05 PM"/>
 
-                        <TextView
-                            android:id="@+id/time1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="4dp"
-                            android:text="11:05 PM" />
+    </LinearLayout>
 
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-            </FrameLayout>
-
-            ​
-        </com.ramotion.foldingcell.FoldingCell>
-
-    </RelativeLayout>
-
+    <View
+        android:id="@+id/reply_btn"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/vector_reply"/>
 
 </RelativeLayout>

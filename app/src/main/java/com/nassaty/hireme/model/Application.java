@@ -8,6 +8,7 @@ public class Application {
     private String sender;
     private int salary;
     private int statusCode;
+    private int rating;
     List<Task> tasks;
 
     public Application() {
@@ -59,5 +60,13 @@ public class Application {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 }

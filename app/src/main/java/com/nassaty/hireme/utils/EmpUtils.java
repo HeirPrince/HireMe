@@ -2,7 +2,6 @@ package com.nassaty.hireme.utils;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,8 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
-
-import static com.shalan.mohamed.itemcounterview.IncDecView.TAG;
 
 public class EmpUtils {
 
@@ -45,30 +42,46 @@ public class EmpUtils {
 					@Override
 					public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 						if (e != null) {
-							Log.w(TAG, "Listen failed.", e);
+							Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
 							return;
 						}
 
-						List<String> cities = new ArrayList<>();
+
 						for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
 							User user = doc.toObject(User.class);
 							emps.addAll(user.getEmployees());
 							list.list(emps);
 						}
-						Log.d(TAG, "Current cites in CA: " + cities);
 					}
 				});
 
 	}
 
-	public void setEmployees(String ref, String uid, List<String> employees) {
-		firebaseFirestore.collection(Constants.userRef).document(ref)
+	public void setEmployees(String id, List<String> employees) {
+		firebaseFirestore.collection(Constants.userRef).document(id)
 				.update("employees", employees)
 				.addOnCompleteListener(new OnCompleteListener<Void>() {
 					@Override
 					public void onComplete(@NonNull Task<Void> task) {
 						if (task.isSuccessful()){
 							Toast.makeText(context, "updated", Toast.LENGTH_SHORT).show();
+						}else {
+							Toast.makeText(context, "failed", Toast.LENGTH_SHORT).show();
+						}
+					}
+				});
+	}
+
+	public void addEmployee(String id, String emp_id){
+		firebaseFirestore.collection(Constants.userRef).document(id)
+				.update("employees", emp_id)
+				.addOnCompleteListener(new OnCompleteListener<Void>() {
+					@Override
+					public void onComplete(@NonNull Task<Void> task) {
+						if (task.isSuccessful()){
+							Toast.makeText(context, "updated", Toast.LENGTH_SHORT).show();
+						}else {
+							Toast.makeText(context, "failed", Toast.LENGTH_SHORT).show();
 						}
 					}
 				});

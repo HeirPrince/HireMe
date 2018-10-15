@@ -48,7 +48,6 @@ public class EditJob extends AppCompatActivity {
         //initiate views
         job_title = findViewById(R.id.jobTitle);
         job_desc = findViewById(R.id.jobDescription);
-        job_salary = findViewById(R.id.jobSalary);
         edit_title = findViewById(R.id.edit_title);
         edit_desc = findViewById(R.id.edit_desc);
         edit_salary = findViewById(R.id.edit_salary);
@@ -65,7 +64,6 @@ public class EditJob extends AppCompatActivity {
                 if (job != null) {
                     job_title.setText(job.getTitle());
                     job_desc.setText(job.getDescription());
-                    job_salary.setText(String.valueOf(job.getSalary()));
                 } else {
                     Toast.makeText(EditJob.this, "job not found", Toast.LENGTH_SHORT).show();
                 }

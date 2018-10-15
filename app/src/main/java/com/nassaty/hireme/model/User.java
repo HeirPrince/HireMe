@@ -4,14 +4,24 @@ import java.util.List;
 
 public class User {
 
+    int rating;
     private String user_name;
     private String phone_number;
     private String email;
     private String UID;
     private String imageTitle;
     private List<String> employees;
+    private String id;
 
     public User() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -60,5 +70,13 @@ public class User {
 
     public void setEmployees(List<String> employees) {
         this.employees = employees;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 }

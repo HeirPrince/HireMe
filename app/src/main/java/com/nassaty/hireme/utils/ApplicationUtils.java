@@ -37,7 +37,8 @@ public class ApplicationUtils {
 
 		final List<Application> applications = new ArrayList<>();
 
-		firebaseFirestore.collection(Constants.applicationRef).document(id).collection("requested")
+		firebaseFirestore.collection(Constants.applicationRef)
+				.whereEqualTo("job_id", id)
 				.get()
 				.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 					@Override
@@ -141,6 +142,8 @@ public class ApplicationUtils {
 			}
 		});
 	}
+
+
 
 
 }

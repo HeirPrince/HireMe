@@ -18,7 +18,6 @@ import com.nassaty.hireme.model.Job;
 import com.nassaty.hireme.model.User;
 import com.nassaty.hireme.room.FavListViewModel;
 import com.nassaty.hireme.utils.StorageUtils;
-import com.nassaty.hireme.viewmodels.NewApplicationVModel;
 import com.nassaty.hireme.viewmodels.UserVModel;
 import com.thekhaeng.pushdownanim.PushDownAnim;
 
@@ -31,8 +30,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.JobV
 
     private Context context;
     private List<Job> jobs;
-    private View.OnLongClickListener onLongClickListener;
-    private NewApplicationVModel applicationVModel;
     private UserVModel userVModel;
     private StorageUtils storageUtils;
     private FavListViewModel favListViewModel;
@@ -40,8 +37,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.JobV
     public FavoritesAdapter(Context ctx, List<Job> jobs, View.OnLongClickListener onLongClickListener) {
         this.context = ctx;
         this.jobs = jobs;
-        this.onLongClickListener = onLongClickListener;
-        this.applicationVModel = ViewModelProviders.of((FragmentActivity) context).get(NewApplicationVModel.class);
         this.userVModel = new UserVModel();
         this.storageUtils = new StorageUtils(context);
         this.favListViewModel = ViewModelProviders.of((FragmentActivity) context).get(FavListViewModel.class);

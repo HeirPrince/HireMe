@@ -13,8 +13,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.nassaty.hireme.activities.MainActivity;
-import com.nassaty.hireme.listeners.NotificationAddedCallBack;
 import com.nassaty.hireme.model.Notif;
 
 import java.util.ArrayList;
@@ -48,10 +46,6 @@ public class NotificationUtils {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(context, "notification sent", Toast.LENGTH_SHORT).show();
-
-                        if (context instanceof MainActivity){
-                            ((NotificationAddedCallBack)context).onAdded();
-                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

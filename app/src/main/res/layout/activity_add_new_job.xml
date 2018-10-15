@@ -9,39 +9,63 @@
 
     <include layout="@layout/layout_toolbar"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="144dp"
+        android:layout_above="@+id/edit"
+        android:layout_below="@+id/toolbar">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Job with a big description are likely to get \nmany applications"/>
+
+
+
+    </RelativeLayout>
+
     <LinearLayout
+        android:id="@+id/edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
         android:orientation="vertical"
-        android:id="@+id/edit"
-        android:layout_marginTop="4dp"
-        android:layout_below="@+id/toolbar"
         android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="* All fields are recommended"
+            android:textColor="@color/color_black"/>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:counterMaxLength="250"
-            app:counterEnabled="true">
+            app:counterEnabled="true"
+            app:counterMaxLength="40">
 
             <EditText
+                android:id="@+id/jobTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/jobTitle"
-                android:hint="@string/job_title"/>
+                android:hint="@string/job_title" />
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:hint="@string/job_description"
-            android:layout_marginTop="4dp">
+            app:counterMaxLength="250">
 
             <EditText
+                android:id="@+id/jobDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/jobDescription"
                 android:layout_below="@id/jobTitle" />
 
         </android.support.design.widget.TextInputLayout>
@@ -49,71 +73,54 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/job_salary"
-            android:layout_marginTop="4dp">
+            android:layout_marginTop="4dp"
+            android:hint="@string/job_salary">
 
             <EditText
+                android:id="@+id/jobSalary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/jobSalary"
                 android:layout_below="@id/jobDescription"
-                android:inputType="numberDecimal"/>
+                android:inputType="numberDecimal" />
 
         </android.support.design.widget.TextInputLayout>
 
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:spinnerMode="dropdown"
-            android:layout_marginTop="4dp"
-            android:id="@+id/spinner_cat"/>
-        
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:orientation="horizontal"
+            android:weightSum="1.2">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:text="Can it be done ,ore than once?"/>
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.2"
+                android:text="Category" />
 
-            <Switch
+            <Spinner
+                android:id="@+id/spinner_cat"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/more_times"/>
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:spinnerMode="dropdown" />
 
-            <com.shalan.mohamed.itemcounterview.IncDecView
-                android:id="@+id/itemCounter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="4dp"
-                app:border_width="0dp"
-                app:dec_icon="@drawable/ic_remove"
-                app:inc_icon="@drawable/ic_add"
-                app:inc_dec_button_color="@color/colorPrimary"
-                app:counterValueColor="@color/colorAccent"
-                app:startCounterValue="1"
-                android:visibility="gone"
-                android:layout_below="@+id/more_times"
-                android:layout_marginTop="10dp"/>
-
-        </RelativeLayout>
-
+        </LinearLayout>
 
     </LinearLayout>
 
 
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/edit"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="6dp"
         android:text="@string/button_add"
-        android:onClick="addJob"/>
+        android:onClick="addJob"
+        android:textColor="@color/color_white" />
 
 </RelativeLayout>

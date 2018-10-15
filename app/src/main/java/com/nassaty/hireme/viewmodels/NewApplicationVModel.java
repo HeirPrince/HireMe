@@ -41,7 +41,7 @@ public class NewApplicationVModel extends AndroidViewModel {
         constants = new Constants();
         this.notificationUtils = new NotificationUtils(application);
         this.timeUtils = new TimeUtils();
-        this.userUtils = new UserUtils();
+        this.userUtils = new UserUtils(application);
         this.jobUtils = new JobUtils();
     }
 

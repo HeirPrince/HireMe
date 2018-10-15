@@ -41,6 +41,7 @@ public class AuthActivity extends AppCompatActivity {
                     new AuthUI.IdpConfig.GoogleBuilder().build(),
                     new AuthUI.IdpConfig.PhoneBuilder().build()
             ))
+                .setIsSmartLockEnabled(false)
                 .setTosUrl("https://www.google.com")
                 .setPrivacyPolicyUrl("https://www.google.com")
             .build(), RC_SIGN_IN);

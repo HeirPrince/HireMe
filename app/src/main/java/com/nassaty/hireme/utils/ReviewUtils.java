@@ -36,7 +36,7 @@ public class ReviewUtils {
         this.firebaseFirestore = FirebaseFirestore.getInstance();
         this.rev = firebaseFirestore.collection("reviews");
         this.authUtils = new AuthUtils(context);
-        this.userUtils = new UserUtils();
+        this.userUtils = new UserUtils(context);
         this.notificationUtils = new NotificationUtils(context);
         this.timeUtils = new TimeUtils();
         this.jobUtils = new JobUtils();

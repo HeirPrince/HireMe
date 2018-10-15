@@ -9,14 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nassaty.hireme.R;
 import com.nassaty.hireme.activities.ApplicantDetails;
-import com.nassaty.hireme.activities.MainActivity;
-import com.nassaty.hireme.listeners.NotificationAddedCallBack;
 import com.nassaty.hireme.model.Notif;
 import com.nassaty.hireme.model.User;
 import com.nassaty.hireme.utils.ApplicationUtils;
@@ -25,7 +22,6 @@ import com.nassaty.hireme.utils.NotificationUtils;
 import com.nassaty.hireme.utils.ReviewUtils;
 import com.nassaty.hireme.utils.StorageUtils;
 import com.nassaty.hireme.utils.UserUtils;
-import com.ramotion.foldingcell.FoldingCell;
 
 import java.util.List;
 
@@ -49,7 +45,7 @@ public class NotifAdapter extends RecyclerView.Adapter {
         this.context = context;
         this.authUtils = new AuthUtils(context);
         this.reviewUtils = new ReviewUtils(context);
-        this.userUtils = new UserUtils();
+        this.userUtils = new UserUtils(context);
         this.storageUtils = new StorageUtils(context);
         this.applicationUtils = new ApplicationUtils(context);
         this.notificationUtils = new NotificationUtils(context);
@@ -104,27 +100,14 @@ public class NotifAdapter extends RecyclerView.Adapter {
                 case 0:
                     if (notification.getReceiver_uid().equals(authUtils.getCurrentUser().getUid())){
 
-                        ((ReviewTypeHolder)holder).content1.setText(notification.getText());
-                        ((ReviewTypeHolder)holder).time1.setText(notification.getTime());
+                        ((ReviewTypeHolder)holder).content.setText(notification.getText());
+                        ((ReviewTypeHolder)holder).time.setText(notification.getTime());
 
                         //reply
                         ((ReviewTypeHolder)holder).reply_btn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                String reply = ((ReviewTypeHolder)holder).reply_input.getText().toString();
-                                ((ReviewTypeHolder)holder).replyReview(notification.getContent_id(), reply);
-                                ((ReviewTypeHolder)holder).foldingCell.fold(true);
-                            }
-                        });
-
-                        //user part
-                        userUtils.getUserByUID(notification.getSender_uid(), new UserUtils.foundUser() {
-                            @Override
-                            public void user(User user) {
-                                storageUtils.downloadUserImage(context, ((ReviewTypeHolder)holder).user_image1, user.getUID(), user.getImageTitle());
-                                storageUtils.downloadUserImage(context, ((ReviewTypeHolder)holder).user_image2, user.getUID(), user.getImageTitle());
-                                ((ReviewTypeHolder)holder).user_name.setText(user.getUser_name());
-                                ((ReviewTypeHolder)holder).time2.setText(notification.getTime());
+                                // FIXME: 10/14/2018 show input dialog
                             }
                         });
                     }
@@ -132,13 +115,22 @@ public class NotifAdapter extends RecyclerView.Adapter {
                     break;
 
                 case 1:
+                    userUtils.getUserByUID(notification.getSender_uid(), new UserUtils.foundUser() {
+                        @Override
+                        public void user(User user) {
+                            if (user != null){
+                                ((JobTypeHolder)holder).user_name.setText(user.getUser_name());
+                                storageUtils.downloadUserImage(context, ((JobTypeHolder)holder).user_image, user.getUID(), user.getImageTitle());
+                            }
+                        }
+                    });
                     ((JobTypeHolder)holder).content.setText(notification.getText());
                     ((JobTypeHolder)holder).time.setText(notification.getTime());
 
-                    ((JobTypeHolder)holder).view.setOnClickListener(new View.OnClickListener() {
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(context, "job viewed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "clicked me", Toast.LENGTH_SHORT).show();// FIXME: 10/14/2018 view job
                         }
                     });
 
@@ -177,9 +169,7 @@ public class NotifAdapter extends RecyclerView.Adapter {
                                                     @Override
                                                     public void onJobDone(Boolean done) {
                                                         if (done) {
-                                                            Toast.makeText(context, "application deleted", Toast.LENGTH_SHORT).show();                                                   if (context instanceof MainActivity){
-                                                                ((NotificationAddedCallBack)context).onRemoved();
-                                                            }
+                                                            Toast.makeText(context, "application deleted", Toast.LENGTH_SHORT).show();
                                                             notifyDataSetChanged();
                                                         } else {
                                                             Toast.makeText(context, "application could not be deleted", Toast.LENGTH_SHORT).show();
@@ -221,35 +211,22 @@ public class NotifAdapter extends RecyclerView.Adapter {
 
     class ReviewTypeHolder extends RecyclerView.ViewHolder{
 
-        TextView content1, time1, user_name, content2, time2;
-        CircleImageView user_image1, user_image2;
-        Button reply_btn;
-        EditText reply_input;
-        FoldingCell foldingCell;
+        TextView user_name, content, time;
+        CircleImageView user_image;
+        View reply_btn;
 
 
         public ReviewTypeHolder(View itemView) {
             super(itemView);
 
-            content1 = itemView.findViewById(R.id.notification_content1);
-            time1 = itemView.findViewById(R.id.time1);
-            foldingCell = itemView.findViewById(R.id.folding_cell);
-            user_image1 = itemView.findViewById(R.id.user_image1);
-            user_image2 = itemView.findViewById(R.id.user_image2);
+            content = itemView.findViewById(R.id.notification_content);
+            time = itemView.findViewById(R.id.time);
             user_name = itemView.findViewById(R.id.user_name);
-            time2 = itemView.findViewById(R.id.time2);
+            user_image = itemView.findViewById(R.id.user_image);
             reply_btn = itemView.findViewById(R.id.reply_btn);
-            reply_input = itemView.findViewById(R.id.reply_input);
-
-            foldingCell.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    foldingCell.toggle(false);
-                }
-            });
         }
 
-        public void replyReview(String content_id, String reply){
+        public void replyReview(String content_id, String reply){ // FIXME: 10/14/2018 Show dialog
             reviewUtils.ReplyReview(content_id, reply, new ReviewUtils.reviewReplied() {
                 @Override
                 public void isReplied(Boolean reply) {
@@ -265,15 +242,16 @@ public class NotifAdapter extends RecyclerView.Adapter {
 
     class JobTypeHolder extends RecyclerView.ViewHolder{
 
-        TextView content, time;
-        View view;
+        TextView user_name, content, time;
+        CircleImageView user_image;
 
         public JobTypeHolder(View itemView) {
             super(itemView);
 
             content = itemView.findViewById(R.id.notification_content);
             time = itemView.findViewById(R.id.time);
-            view = itemView.findViewById(R.id.view_job);
+            user_name = itemView.findViewById(R.id.user_name);
+            user_image = itemView.findViewById(R.id.user_image);
         }
     }
 

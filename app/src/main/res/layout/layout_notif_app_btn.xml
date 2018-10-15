@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="end"
+    android:layout_alignParentEnd="true"
     android:layout_alignParentBottom="true">
 
     <Button
@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:text="View Profile"
         android:drawableLeft="@drawable/vector_account_avatar"
-        android:drawablePadding="14dp"
+        android:drawablePadding="6dp"
         android:layout_gravity="center_vertical"
         android:drawableTint="@color/colorPrimary"
         android:textColor="@color/colorPrimary"
@@ -22,11 +22,11 @@
         android:layout_height="wrap_content"
         android:text="@string/application_delete"
         android:drawableLeft="@drawable/vector_delete"
-        android:drawablePadding="14dp"
+        android:layout_marginStart="10dp"
         android:drawableTint="@color/color_red"
         android:layout_gravity="center_vertical"
         android:textColor="@color/color_red"
-        android:layout_marginStart="14dp"
+        android:drawablePadding="6dp"
         android:id="@+id/delete"
         style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"/>
 

@@ -8,10 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.nassaty.hireme.R;
 import com.nassaty.hireme.activities.MyJobEditor;
+import com.nassaty.hireme.activities.Received;
 import com.nassaty.hireme.model.Job;
 import com.nassaty.hireme.viewmodels.jobListViewModel;
 
@@ -40,7 +42,7 @@ public class my_jobs_adapter extends RecyclerView.Adapter<my_jobs_adapter.JobVie
         final Job job = jobs.get(position);
 
         holder.textTitle.setText(job.getTitle());
-        //TODO add location and time
+        //TODO add time
 
         holder.itemView.setTag(job);
 
@@ -57,6 +59,15 @@ public class my_jobs_adapter extends RecyclerView.Adapter<my_jobs_adapter.JobVie
             @Override
             public void onClick(View v) {
                 removeJob(position);
+            }
+        });
+
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, Received.class);
+                i.putExtra("job_ref", job.getId());
+                context.startActivity(i);
             }
         });
 
@@ -82,6 +93,7 @@ public class my_jobs_adapter extends RecyclerView.Adapter<my_jobs_adapter.JobVie
 
         private TextView textTitle, textLocation, textTime;
         private View delete, edit;
+        private Button view;
 
 
         public JobViewHolder(View itemView) {
@@ -91,6 +103,7 @@ public class my_jobs_adapter extends RecyclerView.Adapter<my_jobs_adapter.JobVie
             textTime = itemView.findViewById(R.id.date);
             delete = itemView.findViewById(R.id.delete);
             edit = itemView.findViewById(R.id.edit);
+            view = itemView.findViewById(R.id.view);
         }
 
 //        private void deleteJob() {

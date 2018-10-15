@@ -32,7 +32,7 @@ public class My_Reviews_adapter extends RecyclerView.Adapter<My_Reviews_adapter.
     public My_Reviews_adapter(List<Review> reviews, Context context) {
         this.reviews = reviews;
         this.context = context;
-        this.userUtils = new UserUtils();
+        this.userUtils = new UserUtils(context);
         this.storageUtils = new StorageUtils(context);
         this.jobUtils = new JobUtils();
     }

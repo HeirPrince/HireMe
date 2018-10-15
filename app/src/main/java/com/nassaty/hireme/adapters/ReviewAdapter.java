@@ -32,7 +32,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewItem
     public ReviewAdapter(List<Review> reviews, Context context) {
         this.reviews = reviews;
         this.context = context;
-        this.userUtils = new UserUtils();
+        this.userUtils = new UserUtils(context);
         this.firebaseStorage = FirebaseStorage.getInstance();
         this.imageRef = firebaseStorage.getReference().child(Constants.getImageFolder());
     }

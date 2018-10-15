@@ -35,7 +35,7 @@ public class NewJobModel{
         this.firebaseFirestore = FirebaseFirestore.getInstance();
         this.notificationUtils = new NotificationUtils(context);
         this.authUtils = new AuthUtils(context);
-        this.userUtils = new UserUtils();
+        this.userUtils = new UserUtils(context);
         this.timeUtils = new TimeUtils();
     }
 
@@ -84,7 +84,7 @@ public class NewJobModel{
     }
 
     public void deleteJob(String id){
-        //delete a job in my jobs activity
+        //delete a job in my_received jobs activity
     }
 
     public void editJob(String ref, Map<String, Object> job, final updateListener listener){

@@ -5,12 +5,11 @@ import android.arch.persistence.room.PrimaryKey;
 
 @Entity
 public class Job {
-
+    @PrimaryKey
+    private int room_id;
     private String id;
     private String title;
     private String description;
-    @PrimaryKey
-    private int salary;
     private String owner;
     private String category;
 
@@ -42,14 +41,6 @@ public class Job {
         this.description = description;
     }
 
-    public int getSalary() {
-        return salary;
-    }
-
-    public void setSalary(int salary) {
-        this.salary = salary;
-    }
-
     public String getOwner() {
         return owner;
     }
@@ -64,5 +55,15 @@ public class Job {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+
+    public int getRoom_id() {
+        return room_id;
+    }
+
+    
+    public void setRoom_id(int room_id) {
+        this.room_id = room_id;
     }
 }

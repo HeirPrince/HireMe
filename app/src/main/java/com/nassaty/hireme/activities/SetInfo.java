@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.nassaty.hireme.R;
@@ -175,20 +174,23 @@ public class SetInfo extends AppCompatActivity {
     }
 
     public void insertNewUser(User user) {
-        CollectionReference userRef = firebaseFirestore.collection(Constants.userRef);
-        userRef.add(user)
-                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+
+        String id = firebaseFirestore.collection(Constants.userRef).document().getId();
+        user.setId(id);
+
+        DocumentReference userRef = firebaseFirestore.collection(Constants.userRef).document(id);
+        userRef.set(user)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                    public void onComplete(@NonNull Task<Void> task) {
                         finish();
                         startActivity(new Intent(SetInfo.this, MainActivity.class));
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(SetInfo.this, "error creating profile", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(SetInfo.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

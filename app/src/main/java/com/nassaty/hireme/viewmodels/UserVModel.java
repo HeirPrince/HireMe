@@ -14,7 +14,6 @@ import com.nassaty.hireme.model.User;
 import com.nassaty.hireme.utils.Constants;
 
 
-// FIXME: 8/11/2018 into a cool view model
 public class UserVModel {
 
     public static FirebaseFirestore firebaseFirestore;
@@ -26,7 +25,6 @@ public class UserVModel {
         storage = FirebaseStorage.getInstance();
     }
 
-    // TODO: 8/11/2018 get user from firestore document
     public User getUserByUid(String uid, final userByUid userByUid){
         firebaseFirestore.collection(Constants.userRef)
                 .whereEqualTo("uid", uid)

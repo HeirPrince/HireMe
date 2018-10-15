@@ -10,6 +10,10 @@
         android:icon="@drawable/selector_vector_nearby"
         android:title="@string/bnav_nearby"/>
 
+    <item android:id="@+id/action_notifications"
+        android:icon="@drawable/selector_vector_notif"
+        android:title="@string/bnav_notif"/>
+
     <item android:id="@+id/action_mine"
         android:icon="@drawable/selector_vector_mine"
         android:title="@string/bnav_profile"/>

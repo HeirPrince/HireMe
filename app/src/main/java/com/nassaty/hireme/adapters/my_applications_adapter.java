@@ -38,7 +38,7 @@ public class my_applications_adapter extends RecyclerView.Adapter<my_application
     public my_applications_adapter(Context context, List<Application> applications) {
         this.context = context;
         this.applications = applications;
-        this.userUtils = new UserUtils();
+        this.userUtils = new UserUtils(context);
         this.jobUtils = new JobUtils();
         this.storageUtils = new StorageUtils(context);
 

@@ -28,4 +28,35 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
+    <LinearLayout
+        android:id="@+id/plc_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Press"/>
+
+        <View
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/vector_applicants"
+            android:backgroundTint="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:text="to add a new Job"/>
+
+    </LinearLayout>
+
 </android.support.design.widget.CoordinatorLayout>
