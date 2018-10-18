@@ -13,8 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nassaty.hireme.R;
+import com.nassaty.hireme.model.Employee;
 import com.nassaty.hireme.model.Job;
+import com.nassaty.hireme.model.User;
 import com.nassaty.hireme.utils.ApplicationUtils;
+import com.nassaty.hireme.utils.AuthUtils;
 import com.nassaty.hireme.utils.JobUtils;
 import com.nassaty.hireme.utils.StorageUtils;
 import com.nassaty.hireme.utils.UserUtils;
@@ -26,19 +29,21 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.EmployeeVHolder> {
 
 	Context context;
-	List<String> employees;
+	List<Employee> employees;
+	AuthUtils authUtils;
 	StorageUtils storageUtils;
 	JobUtils jobUtils;
 	UserUtils userUtils;
 	ApplicationUtils applicationUtils;
 
-	public EmployeeAdapter(Context context, List<String> employees) {
+	public EmployeeAdapter(Context context, List<Employee> employees) {
 		this.context = context;
 		this.employees = employees;
 		this.storageUtils = new StorageUtils(context);
 		this.jobUtils = new JobUtils();
 		this.userUtils = new UserUtils(context);
 		this.applicationUtils = new ApplicationUtils(context);
+		this.authUtils = new AuthUtils(context);
 	}
 
 	@NonNull
@@ -50,58 +55,71 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
 
 	@Override
 	public void onBindViewHolder(@NonNull final EmployeeVHolder holder, int position) {
-		String uid = employees.get(position);
+		Employee employee = employees.get(position);
 
-		userUtils.getUserByUID(uid, user -> {
-			if (user != null){
+		userUtils.getUserByUID(employee.getEmployee_uid(), user -> {
+			if (user != null) {
 				holder.user_name.setText(user.getUser_name());
 				holder.user_skill.setText("Skill");
 				storageUtils.downloadUserImage(context, holder.user_image, user.getUID(), user.getImageTitle());
 
 				//load job title
 				jobUtils.getJobsByUID(user.getUID(), jobs -> {
-					if (jobs != null){
-						for (Job job : jobs){
+					if (jobs != null) {
+						for (Job job : jobs) {
 							holder.job_title.setText(job.getTitle());
 						}
 					}
 				});
-			}else {
+			} else {
 				Toast.makeText(context, "employees not found", Toast.LENGTH_SHORT).show();
 				return;
 			}
 		});
 
+		holder.done.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				final Dialog confirmDialog = new Dialog(context);
+				confirmDialog.setContentView(R.layout.dialog_applicant_rating);
 
+				Button dialog_cancel = confirmDialog.findViewById(R.id.buttonCancel);
+				Button dialog_rate = confirmDialog.findViewById(R.id.buttonRate);
+				RatingBar ratingBar = confirmDialog.findViewById(R.id.ratingBar);
 
+				dialog_cancel.setOnClickListener(v1 -> confirmDialog.dismiss());
 
-		holder.done.setOnClickListener(v -> {
-			final Dialog confirmDialog = new Dialog(context);
-			confirmDialog.setContentView(R.layout.dialog_applicant_confirm);
+				dialog_rate.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						confirmDialog.dismiss();
+						// rate applicant
+						float val = ratingBar.getRating();
 
-			Button dialog_cancel = confirmDialog.findViewById(R.id.cancel);
-			Button dialog_rate = confirmDialog.findViewById(R.id.view_list);
-			RatingBar ratingBar = confirmDialog.findViewById(R.id.ratingBar);
+						userUtils.getUserByUID(employee.getEmployee_uid(), new UserUtils.foundUser() {
+							@Override
+							public void user(User user) {
+								if (user != null) {
+									userUtils.rateApplicant(user.getUID(), authUtils.getCurrentUser().getUid(), val, new UserUtils.isRated() {
+										@Override
+										public void rated(Boolean isUserRated) {
+											if (isUserRated) {
+												Toast.makeText(context, "Thank you for your rating", Toast.LENGTH_SHORT).show();
+											} else {
+												Toast.makeText(context, "Applicant couldn't be rated", Toast.LENGTH_SHORT).show();
+											}
+										}
+									});
+								}
+							}
+						});
 
-			dialog_cancel.setOnClickListener(v1 -> confirmDialog.dismiss());
-
-			dialog_rate.setOnClickListener(v12 -> {
-				confirmDialog.dismiss();
-				// rate applicant
-				int val = ratingBar.getNumStars();
-				userUtils.rateApplicant(uid, val, isUserRated -> {
-					if (isUserRated){
-						Toast.makeText(context, "Thank you for your stats", Toast.LENGTH_SHORT).show();
-					}else {
-						Toast.makeText(context, "Applicant couldn't be rated", Toast.LENGTH_SHORT).show();
 					}
 				});
 
-			});
-
-			confirmDialog.show();
+				confirmDialog.show();
+			}
 		});
-
 	}
 
 	@Override

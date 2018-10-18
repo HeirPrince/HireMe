@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nassaty.hireme.R;
 import com.nassaty.hireme.activities.Apply;
@@ -18,7 +19,7 @@ import com.nassaty.hireme.model.Job;
 import com.nassaty.hireme.model.User;
 import com.nassaty.hireme.room.FavListViewModel;
 import com.nassaty.hireme.utils.StorageUtils;
-import com.nassaty.hireme.viewmodels.UserVModel;
+import com.nassaty.hireme.utils.UserUtils;
 import com.thekhaeng.pushdownanim.PushDownAnim;
 
 import java.util.List;
@@ -30,14 +31,14 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.JobV
 
     private Context context;
     private List<Job> jobs;
-    private UserVModel userVModel;
+    private UserUtils userUtils;
     private StorageUtils storageUtils;
     private FavListViewModel favListViewModel;
 
     public FavoritesAdapter(Context ctx, List<Job> jobs, View.OnLongClickListener onLongClickListener) {
         this.context = ctx;
         this.jobs = jobs;
-        this.userVModel = new UserVModel();
+        this.userUtils = new UserUtils(context);
         this.storageUtils = new StorageUtils(context);
         this.favListViewModel = ViewModelProviders.of((FragmentActivity) context).get(FavListViewModel.class);
     }
@@ -54,15 +55,21 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.JobV
 
         holder.job_title.setText(job.getTitle());
 
-        userVModel.getUserByUid(job.getOwner(), new UserVModel.userByUid() {
+
+        userUtils.getUserByUID(job.getOwner(), new UserUtils.foundUser() {
             @Override
             public void user(User user) {
-                holder.owner_names.setText(user.getUser_name());
-                storageUtils.downloadUserImage(context, holder.owner_image, user.getUID(), user.getImageTitle());
-                holder.location.setText("Kigali");// FIXME: 8/13/2018 set location
-                holder.date.setText("Aug, 13");// FIXME: 8/13/2018 set date plz nigga
+                if (user != null){
+                    holder.owner_names.setText(user.getUser_name());
+                    storageUtils.downloadUserImage(context, holder.owner_image, user.getUID(), user.getImageTitle());
+                    holder.location.setText("Kigali");// FIXME: 8/13/2018 set location
+                    holder.date.setText("Aug, 13");// FIXME: 8/13/2018 set date plz nigga
+                }else {
+                    Toast.makeText(context, "user not found", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
 
         holder.setRef(job.getId());
         holder.itemView.setTag(job);

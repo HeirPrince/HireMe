@@ -52,6 +52,7 @@
     <string name="search_hint">Enter Job Title</string>
     <string name="bnav_notif">Notifications</string>
     <string name="application_others">Received</string>
+    <string name="menu_employees">My Employees</string>
 
 
 </resources>

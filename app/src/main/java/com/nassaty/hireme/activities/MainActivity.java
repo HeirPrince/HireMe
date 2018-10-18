@@ -144,6 +144,10 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 				startActivity(new Intent(MainActivity.this, Favorites.class));
 				break;
 
+			case R.id.action_employees:
+				startActivity(new Intent(MainActivity.this, Worker_list.class));
+				break;
+
 			case R.id.search:
 				startActivity(new Intent(MainActivity.this, SearchResultsActivity.class));
 				break;

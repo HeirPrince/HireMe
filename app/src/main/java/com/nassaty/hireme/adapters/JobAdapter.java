@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nassaty.hireme.R;
 import com.nassaty.hireme.activities.Apply;
@@ -20,8 +21,8 @@ import com.nassaty.hireme.model.Job;
 import com.nassaty.hireme.model.User;
 import com.nassaty.hireme.room.NewFavVModel;
 import com.nassaty.hireme.utils.StorageUtils;
+import com.nassaty.hireme.utils.UserUtils;
 import com.nassaty.hireme.viewmodels.NewApplicationVModel;
-import com.nassaty.hireme.viewmodels.UserVModel;
 import com.thekhaeng.pushdownanim.PushDownAnim;
 
 import java.util.ArrayList;
@@ -35,17 +36,17 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> i
     private List<Job> jobs;
     private List<Job> filteredJobs;
     private NewApplicationVModel applicationVModel;
-    private UserVModel userVModel;
     private NewFavVModel newFavVModel;
     private StorageUtils storageUtils;
+    private UserUtils userUtils;
 
     public JobAdapter(Context ctx, List<Job> jobs) {
         this.context = ctx;
         this.jobs = jobs;
         this.applicationVModel = ViewModelProviders.of((FragmentActivity) context).get(NewApplicationVModel.class);
-        this.userVModel = new UserVModel();
         this.storageUtils = new StorageUtils(context);
         this.newFavVModel = ViewModelProviders.of((FragmentActivity) context).get(NewFavVModel.class);
+        this.userUtils = new UserUtils(context);
     }
 
     @Override
@@ -60,13 +61,17 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> i
 
         holder.job_title.setText(job.getTitle());
 
-        userVModel.getUserByUid(job.getOwner(), new UserVModel.userByUid() {
+        userUtils.getUserByUID(job.getOwner(), new UserUtils.foundUser() {
             @Override
             public void user(User user) {
-                holder.owner_names.setText(user.getUser_name());
-                storageUtils.downloadUserImage(context, holder.owner_image, user.getUID(), user.getImageTitle());
-                holder.location.setText("Kigali");// FIXME: 8/13/2018 set location
-                holder.date.setText("Aug, 13");// FIXME: 8/13/2018 set date plz nigga
+                if (user != null){
+                    holder.owner_names.setText(user.getUser_name());
+                    storageUtils.downloadUserImage(context, holder.owner_image, user.getUID(), user.getImageTitle());
+                    holder.location.setText("Kigali");// FIXME: 8/13/2018 set location
+                    holder.date.setText("Aug, 13");// FIXME: 8/13/2018 set date plz nigga
+                }else {
+                    Toast.makeText(context, "no user found", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

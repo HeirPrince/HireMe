@@ -68,26 +68,26 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="match_parent"
+            style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
             android:text="CANCEL"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/color_white"
+            android:layout_height="40dp"
             android:layout_marginEnd="2dp"
+            android:textColor="@color/colorPrimary"
             android:id="@+id/cancel" />
 
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="match_parent"
+            style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_height="40dp"
             android:text="VIEW LIST"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/color_white"
+            android:textColor="@color/colorPrimary"
             android:layout_marginStart="4dp"
             android:id="@+id/view_list"/>
 

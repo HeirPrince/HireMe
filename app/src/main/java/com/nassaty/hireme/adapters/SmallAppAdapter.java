@@ -83,6 +83,7 @@ public class SmallAppAdapter extends RecyclerView.Adapter<SmallAppAdapter.AppVie
                          Glide.with(context)
                                  .load(storageUtils.getUserProfileImageRef(application.getSender(), user.getImageTitle()))
                                  .into(profile_pic);
+                         app_rating.setRating(user.getRating());
                      }
                  }
              });

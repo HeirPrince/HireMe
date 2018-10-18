@@ -60,7 +60,19 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
         holder.accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                empUtils.addEmployee(authUtils.getCurrentUser().getUid(), application.getSender());
+
+                userUtils.getUserByUID(authUtils.getCurrentUser().getUid(), new UserUtils.foundUser() {
+                    @Override
+                    public void user(User employer) {
+                        userUtils.getUserByUID(application.getSender(), new UserUtils.foundUser() {
+                            @Override
+                            public void user(User employee) {
+                                empUtils.addEmployee(employer.getUID(), employee.getUID());
+                            }
+                        });
+
+                    }
+                });
             }
         });
 

@@ -16,7 +16,6 @@ import com.nassaty.hireme.R;
 import com.nassaty.hireme.adapters.ReviewAdapter;
 import com.nassaty.hireme.adapters.SmallAppAdapter;
 import com.nassaty.hireme.listeners.SingleJobListener;
-import com.nassaty.hireme.listeners.appListListener;
 import com.nassaty.hireme.model.Application;
 import com.nassaty.hireme.model.Job;
 import com.nassaty.hireme.model.Review;
@@ -25,8 +24,8 @@ import com.nassaty.hireme.utils.ApplicationUtils;
 import com.nassaty.hireme.utils.AuthUtils;
 import com.nassaty.hireme.utils.Constants;
 import com.nassaty.hireme.utils.ReviewUtils;
+import com.nassaty.hireme.utils.UserUtils;
 import com.nassaty.hireme.viewmodels.AppListVModel;
-import com.nassaty.hireme.viewmodels.UserVModel;
 import com.nassaty.hireme.viewmodels.jobListViewModel;
 
 import java.util.List;
@@ -38,11 +37,11 @@ public class JobDetails extends AppCompatActivity {
     
     private AuthUtils authUtils;
     private FirebaseStorage firebaseStorage;
-    private UserVModel userVModel;
     private AppListVModel appListVModel;
     private ApplicationUtils applicationUtils;
     private ReviewAdapter reviewAdapter;
     private ReviewUtils reviewUtils;
+    private UserUtils userUtils;
     
     TextView job_title, job_desc, job_location, app_count, rev_count, rev_text;
     CircleImageView user_image, rev_user_image;
@@ -58,8 +57,8 @@ public class JobDetails extends AppCompatActivity {
         firebaseStorage = FirebaseStorage.getInstance();
         applicationUtils = new ApplicationUtils(this);
         reviewUtils = new ReviewUtils(this);
+        userUtils = new UserUtils(this);
 
-        userVModel = new UserVModel();
         jobVmodel = ViewModelProviders.of(Objects.requireNonNull(this)).get(jobListViewModel.class);
         appListVModel = ViewModelProviders.of(this).get(AppListVModel.class);
         
@@ -89,7 +88,7 @@ public class JobDetails extends AppCompatActivity {
         jobVmodel.getJobByRef(getJob_id(), new SingleJobListener() {
             @Override
             public void foundJob(final Job job) {
-                userVModel.getUserByUid(job.getOwner(), new UserVModel.userByUid() {
+                userUtils.getUserByUID(job.getOwner(), new UserUtils.foundUser() {
                     @Override
                     public void user(User user) {
                         if (user != null){
@@ -98,12 +97,13 @@ public class JobDetails extends AppCompatActivity {
 
                             loadImage(user.getImageTitle(), user.getUID());
 
-                            appListVModel.getAppsByJobID(job.getId(), new appListListener() {
+                            applicationUtils.getAppsByJobId(job.getId(), new ApplicationUtils.onAppFoundListener() {
                                 @Override
-                                public void appList(List<Application> applications) {
+                                public void foundApp(List<Application> applications) {
                                     if (applications != null){
                                         populateApplist(job.getId());
                                         app_count.setText(String.valueOf(applications.size()));
+
                                     }else {
                                         app_count.setText(String.valueOf(0));
                                     }

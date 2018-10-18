@@ -22,8 +22,6 @@
             android:layout_centerInParent="true"
             android:text="Job with a big description are likely to get \nmany applications"/>
 
-
-
     </RelativeLayout>
 
     <LinearLayout
@@ -70,25 +68,11 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:hint="@string/job_salary">
-
-            <EditText
-                android:id="@+id/jobSalary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/jobDescription"
-                android:inputType="numberDecimal" />
-
-        </android.support.design.widget.TextInputLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginTop="16dp"
             android:weightSum="1.2">
 
             <TextView

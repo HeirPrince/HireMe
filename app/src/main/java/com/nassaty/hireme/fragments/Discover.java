@@ -146,12 +146,10 @@ public class Discover extends Fragment{
             jobs.clear();
             sections.clear();
             setLoading(false);
-            job_list.setVisibility(View.GONE);
-            plc_holder.setVisibility(View.VISIBLE);
+            job_list.setVisibility(View.VISIBLE);
         }else {
             setLoading(false);
-            job_list.setVisibility(View.VISIBLE);
-            plc_holder.setVisibility(View.GONE);
+            job_list.setVisibility(View.GONE);
         }
     }
 

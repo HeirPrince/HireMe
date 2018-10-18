@@ -5,10 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.nassaty.hireme.R;
 import com.nassaty.hireme.adapters.EmployeeAdapter;
+import com.nassaty.hireme.model.Employee;
 import com.nassaty.hireme.utils.AuthUtils;
 import com.nassaty.hireme.utils.EmpUtils;
 
@@ -22,7 +25,8 @@ public class Worker_list extends AppCompatActivity {
 	EmpUtils empUtils;
 	AuthUtils authUtils;
 	EmployeeAdapter employeeAdapter;
-	List<String> emps;
+	List<Employee> emps;
+	ProgressBar progressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,21 +42,32 @@ public class Worker_list extends AppCompatActivity {
 		emps = new ArrayList<>();
 		employeeAdapter = new EmployeeAdapter(this, emps);
 
+		progressBar = findViewById(R.id.progress);
+		toggleProgress(true);
 		employee_list = findViewById(R.id.worker_list);
 		employee_list.setLayoutManager(new LinearLayoutManager(this));
 		employee_list.setAdapter(employeeAdapter);
 
 		loadData();
-		
 
+	}
+
+	private void toggleProgress(boolean b) {
+		if (b)
+			progressBar.setVisibility(View.VISIBLE);
+		else
+			progressBar.setVisibility(View.GONE);
 	}
 
 	private void loadData() {
 		empUtils.getEmployees(authUtils.getCurrentUser().getUid(), employees -> {
 			if (employees != null){
+				toggleProgress(false);
+				emps.clear();
 				emps.addAll(employees);
 				employeeAdapter.notifyDataSetChanged();
 			}else {
+				toggleProgress(false);
 				Toast.makeText(Worker_list.this, "no employees found for "+authUtils.getCurrentUser().getDisplayName(), Toast.LENGTH_SHORT).show();
 				employeeAdapter.notifyDataSetChanged();
 			}
