@@ -20,6 +20,7 @@ import com.nassaty.hireme.model.Job;
 import com.nassaty.hireme.model.Section;
 import com.nassaty.hireme.utils.AuthUtils;
 import com.nassaty.hireme.utils.RecyclerViewType;
+import com.nassaty.hireme.utils.UserUtils;
 import com.nassaty.hireme.viewmodels.SharedViewModel;
 import com.nassaty.hireme.viewmodels.jobListViewModel;
 
@@ -36,6 +37,7 @@ public class Discover extends Fragment{
     jobListViewModel viewModel;
     ProgressBar progress;
     AuthUtils authUtils;
+    UserUtils userUtils;
     List<Section> sections;
     LinearLayout plc_holder;
     private SharedViewModel sharedViewModel;
@@ -59,6 +61,7 @@ public class Discover extends Fragment{
         sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
 
         authUtils = new AuthUtils(getContext());
+        userUtils = new UserUtils(getContext());
         sections = new ArrayList<>();
 
         job_list.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -66,6 +69,13 @@ public class Discover extends Fragment{
         job_list.setItemAnimator(new DefaultItemAnimator());
 
         scrollList = (onScrollList) getActivity();
+
+        userUtils.getUserRating(authUtils.getCurrentUser().getUid(), new UserUtils.userStatsListener() {
+            @Override
+            public void stats(int rating, int job_count, int app_count) {
+                
+            }
+        });
 
         toggleScroll(job_list);
 

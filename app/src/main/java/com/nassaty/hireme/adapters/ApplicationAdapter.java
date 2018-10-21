@@ -107,7 +107,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         CircleImageView user_image;
-        TextView user_name, user_skill, time;
+        TextView user_name, user_skill, time, txt_salary;
         Button accept;
 
         public ViewHolder(View itemView) {
@@ -117,6 +117,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
             user_name = itemView.findViewById(R.id.user_name);
             user_skill= itemView.findViewById(R.id.user_skill);
             time = itemView.findViewById(R.id.app_time);
+            txt_salary = itemView.findViewById(R.id.user_salary);
 
         }
 
@@ -128,6 +129,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
                          user_name.setText(user.getUser_name());
                          user_skill.setText("Stonner");
                          storageUtils.downloadUserImage(context, user_image, user.getUID(), user.getImageTitle());
+                         txt_salary.setText(Integer.valueOf(application.getSalary())+"RWF");
                      }
                  }
              });

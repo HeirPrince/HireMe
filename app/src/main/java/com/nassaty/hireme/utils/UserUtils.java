@@ -9,15 +9,14 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.nassaty.hireme.model.Rate;
 import com.nassaty.hireme.model.User;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -68,8 +67,10 @@ public class UserUtils {
     }
 
     public void rateApplicant(String applicant_id, String rating_uid, float val, isRated isRated){
-	    Map<String, Float> rate = new HashMap<>();
-	    rate.put(rating_uid, val);
+
+        Rate rate = new Rate();
+        rate.setRating(val);
+        rate.setUser_uid(rating_uid);
 
         firebaseFirestore.collection("Rating").document(applicant_id).collection("Clients")
                 .add(rate)
@@ -105,8 +106,8 @@ public class UserUtils {
 
                         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots){
                             if (documentSnapshot.exists()){
-                                float rating = documentSnapshot.toObject(float.class);
-                                total = total + rating;
+                                Rate rating = documentSnapshot.toObject(Rate.class);
+                                total = total + rating.getRating();
                                 count = count + 1;
                                 average = total / count;
 
@@ -121,14 +122,17 @@ public class UserUtils {
     }
 
     private void setAverageRating(String uid, float average) {
-        Map<String, Float> rate = new HashMap<>();
-        rate.put("rating", average);
+
+        Rate rate = new Rate();
+        rate.setUser_uid(uid);
+        rate.setRating(average);
 
         firebaseFirestore.collection("Rating").document(uid).collection("Average Rating")
-                .add(rate)
-                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                .document(rate.getUser_uid())
+                .set(rate)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                    public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(context, "Average rating set successfully", Toast.LENGTH_SHORT).show();
                         }else {
@@ -143,35 +147,34 @@ public class UserUtils {
         });
     }
 
-    public void getProfileData(String uid, final userByUid userByUid){
-        firebaseFirestore.collection(Constants.userRef)
-                .whereEqualTo("uid", uid)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+    public void getAverageRating(String uid, ratingListener listener){
+        firebaseFirestore.collection("Rating").document(uid).collection("Average Rating").document(uid)
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
-                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                        if (e == null){
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                        if (e != null){
                             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
-                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots){
-                            User user = doc.toObject(User.class);
-                            if (user != null){
-                                userByUid.user(user);
+                        if (documentSnapshot.exists()){
+                            Rate rate = documentSnapshot.toObject(Rate.class);
+                            if (rate != null){
+                                listener.rating(rate.getRating());
                             }else {
-                                userByUid.user(null);
+                                listener.rating(0);
                             }
+                        }else {
+                            listener.rating(0);
                         }
                     }
                 });
     }
 
-    public interface userByUid{
-        void user(User user);
+    public interface ratingListener{
+        void rating (float val);
     }
 
-    public void getUserByLocation(){
-        // FIXME: 10/12/2018 Nmapactivity
-    }
+    
 
     public interface isRated{
         void rated(Boolean isUserRated);

@@ -1,18 +1,23 @@
 package com.nassaty.hireme.utils;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.nassaty.hireme.model.Job;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class JobUtils {
 
@@ -82,6 +87,33 @@ public class JobUtils {
                         }
                     }
                 });
+    }
+
+    public void getJobCount(String uid, statsListener listener){
+        firebaseFirestore.collection(Constants.jobRef)
+                .whereEqualTo("owner", uid)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if (e != null){
+                            Log.d("TAG", e.getMessage());
+                        }
+
+                        int total = 0;
+                        int count = 0;
+
+                        for (DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()){
+                            if (snapshot.exists()){
+                                count = count+1;
+                                listener.jobs(count);
+                            }
+                        }
+                    }
+                });
+    }
+
+    public interface statsListener{
+        void jobs(int val);
     }
 
 
